@@ -18,7 +18,7 @@ Ressource: Schnittstellen für eingehende Requests (Gateway)
 persistence: Schnittstelle zur und Konfiguration der Datenbank
 
 
-Wichtig: Damit ihr das 'Projekt nutzen könnt, benötigit ihr Maven, das baut euch dann daraus ein eclipse bzw. ein IntelliJ Projekt.
+Wichtig: Damit ihr das Projekt nutzen könnt, benötigt ihr Maven, das baut euch dann daraus ein Eclipse bzw. ein IntelliJ Projekt.
 Pusht bitte auch nicht eure lokalen Projekt-Settings ins Repo und wenn ihr was pusht, dann bitte immer in einen eigenen Branch, damit wir gemeinsam das mergen können und keine Fehler in den Master-Branch kommen.
 
 Das Frontend bitte im Ordner src/main/webapp implementieren und bitte nicht die Konfigurationen im Webinf-Ordner verändern.
