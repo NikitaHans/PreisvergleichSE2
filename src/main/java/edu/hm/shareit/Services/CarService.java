@@ -1,21 +1,36 @@
 package edu.hm.shareit.Services;
 
 import edu.hm.shareit.models.Car;
+import edu.hm.shareit.persistence.DatabaseManager;
+
+import javax.inject.Inject;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
- * @author Markus Krahl
+ * Created by Markus Krahl, Thomas Murschallon 21.04.17.
  */
-public interface CarService {
+public class CarService implements CarServiceFunctionality {
+
+    private DatabaseManager databaseManager;
+
+    private static List<Car> testCarList = new LinkedList<>();
 
     /**
-     *
-     * @return MediaServiceResult
+     * Constructor.
+     * @param databaseManager
      */
-    Car[] getProducts();
+    @Inject
+    public CarService(DatabaseManager databaseManager) {
+        this.databaseManager = databaseManager;
+    }
 
-    /**
-     *
-     * @return MediaServiceResult
-     */
-    String submitProduct(Car car);
+    public String submitProduct(Car car){
+        testCarList.add(car);
+        return "successful";
+    }
+
+    public Car[] getProducts(){
+        return testCarList.toArray(new Car[testCarList.size()]);
+    }
 }
