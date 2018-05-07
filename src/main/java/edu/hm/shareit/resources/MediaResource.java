@@ -4,8 +4,9 @@ package edu.hm.shareit.resources;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.hm.shareit.Services.CarService;
+import edu.hm.shareit.Services.CarServiceFunctionality;
 import edu.hm.shareit.models.Car;
+import org.apache.log4j.Logger;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -21,18 +22,17 @@ import javax.ws.rs.core.*;
 @Path("/start")
 public class MediaResource {
 
-    private final CarService cs;
-    private static final String CookieName = "Token";
-    private final String LogInPage = "https://a4-auth-server-fancy-team-42.herokuapp.com/authenticate/auth/user";
+    private final CarServiceFunctionality carService;
+    private final Logger log = Logger.getLogger(this.getClass());
 
     /**
      * Constructor of class.
-     * cs is class for business logic, this is only an example and business logic is not used
-     * @param cs
+     * carService is class for business logic, this is only an example and business logic is not used
+     * @param carService
      */
     @Inject
-    public MediaResource(CarService cs) {
-        this.cs = cs;
+    public MediaResource(CarServiceFunctionality carService) {
+        this.carService = carService;
     }
 
 
@@ -44,17 +44,15 @@ public class MediaResource {
     @Path("/get")
     @Produces("application/json")
     public Response getBooks() {
-
-        Car[] list = cs.getProducts();
-        String json = "";
+        log.info("entered getBooks");
+        Car[] list = carService.getProducts();
         ObjectMapper mapper = new ObjectMapper();
-
+        String json = "\"Message\":\"error\"";
         try {
             json = mapper.writeValueAsString(list);
         } catch (JsonProcessingException e) {
-            json = "\"Message\":\"error\"";
+            log.warn("Encountered " + e.getClass());
         }
-
         return Response
                 .status(Response.Status.OK)
                 .entity(json)
@@ -62,7 +60,7 @@ public class MediaResource {
     }
 
     /**
-     * Insert a new book to the list.
+     * Insert a new car to the list.
      * @param car the new car
      * @return Response with status
      */
@@ -70,11 +68,11 @@ public class MediaResource {
     @Path("/post")
     @Produces("application/json")
     @Consumes("application/json")
-    public Response createCar(Car car) {
-        String message = cs.submitProduct(car);
+    public Response insertCar(Car car) {
+        log.info("entered insertCar");
         return Response
-                .status(200)
-                .entity("\"status\":\""+ message + "\"")
+                .status(Response.Status.OK)
+                .entity("\"status\":\"" + carService.submitProduct(car) + "\"")
                 .build();
     }
 

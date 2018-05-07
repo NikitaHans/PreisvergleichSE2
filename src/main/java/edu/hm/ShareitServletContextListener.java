@@ -7,10 +7,10 @@ import com.google.inject.servlet.ServletModule;
 
 //import edu.hm.shareit.persistence.MediaPersistence;
 //import edu.hm.shareit.persistence.MediaPersistenceImpl;
+import edu.hm.shareit.Services.CarServiceFunctionality;
 import edu.hm.shareit.Services.CarService;
-import edu.hm.shareit.Services.CarServiceImpl;
+import edu.hm.shareit.persistence.DatabaseManagerFunctionality;
 import edu.hm.shareit.persistence.DatabaseManager;
-import edu.hm.shareit.persistence.DatabaseManagerImpl;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
@@ -25,8 +25,8 @@ public class ShareitServletContextListener extends GuiceServletContextListener {
     private static final Injector injector = Guice.createInjector(new ServletModule() {
         @Override
         protected void configureServlets() {
-            bind(CarService.class).to(CarServiceImpl.class);
-            bind(DatabaseManager.class).to(DatabaseManagerImpl.class);
+            bind(CarServiceFunctionality.class).to(CarService.class);
+            bind(DatabaseManagerFunctionality.class).to(DatabaseManager.class);
             bind(SessionFactory.class).toInstance(new Configuration().configure().buildSessionFactory());
         }
     });
