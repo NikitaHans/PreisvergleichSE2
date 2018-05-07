@@ -1,4 +1,4 @@
-# Starter Code für Presirechner
+# Starter Code für Preisrechner
 
 Kurze Erläuterung:
 
