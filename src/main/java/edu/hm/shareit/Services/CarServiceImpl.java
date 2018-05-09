@@ -1,6 +1,6 @@
 package edu.hm.shareit.Services;
 
-import edu.hm.shareit.models.Car;
+import edu.hm.shareit.models.*;
 import edu.hm.shareit.persistence.DatabaseManager;
 
 import javax.inject.Inject;
@@ -14,7 +14,6 @@ public class CarServiceImpl implements CarService {
 
     private DatabaseManager dbMan;
 
-    private static List<Car> test = new LinkedList<>();
 
     /**
      * Constructor.
@@ -25,12 +24,29 @@ public class CarServiceImpl implements CarService {
         this.dbMan = dbMan;
     }
 
-    public String submitProduct(Car car){
-        test.add(car);
+    public String submitOrder(Order Order){
         return "successful";
     }
 
-    public Car[] getProducts(){
-        return test.toArray(new Car[test.size()]);
+    public Brand[] getBrands(){
+        return new Brand[0];
+    }
+
+    public BrandType[] getTypes(Brand brand){
+        return new BrandType[0];
+    }
+
+    public CarPaket[] getPakets(){
+        return new CarPaket[0];
+    }
+
+    @Override
+    public Attribute[] getAttributes() {
+        return new Attribute[0];
+    }
+
+    @Override
+    public BrandType[] getAllTypes() {
+        return new BrandType[0];
     }
 }
