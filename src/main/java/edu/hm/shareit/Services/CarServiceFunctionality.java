@@ -7,7 +7,6 @@ import edu.hm.shareit.models.*;
  */
 public interface CarServiceFunctionality {
 
-
     Brand[] getBrands();
 
     BrandType[] getTypes(Brand brand);

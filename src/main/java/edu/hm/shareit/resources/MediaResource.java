@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.hm.shareit.Services.CarService;
 import edu.hm.shareit.Services.CarServiceFunctionality;
 import edu.hm.shareit.models.*;
+import org.apache.log4j.Logger;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -23,11 +24,11 @@ import javax.ws.rs.core.*;
 public class MediaResource {
 
     private final CarServiceFunctionality cs;
-
+    private final Logger log = Logger.getLogger(this.getClass());
 
     @Inject
-    public MediaResource(CarService cs) {
-        this.cs = cs;
+    public MediaResource(CarServiceFunctionality carService) {
+        this.cs = carService;
     }
 
 
@@ -119,22 +120,21 @@ public class MediaResource {
     @Path("/packets")
     @Produces("application/json")
     public Response getPackets() {
-
         CarPaket[] list = cs.getPakets();
         String json = "";
         ObjectMapper mapper = new ObjectMapper();
-
+        String json = "\"Message\":\"error\"";
         try {
             json = mapper.writeValueAsString(list);
         } catch (JsonProcessingException e) {
-            json = "\"Message\":\"error\"";
+            log.warn("Encountered " + e.getClass());
         }
-
         return Response
                 .status(Response.Status.OK)
                 .entity(json)
                 .build();
     }
+
 
     @POST
     @Path("/submit")
@@ -143,8 +143,8 @@ public class MediaResource {
     public Response createCar(Order order) {
         String message = cs.submitOrder(order);
         return Response
-                .status(200)
-                .entity("\"status\":\""+ message + "\"")
+                .status(Response.Status.OK)
+                .entity("\"status\":\"" + carService.submitProduct(car) + "\"")
                 .build();
     }
 
