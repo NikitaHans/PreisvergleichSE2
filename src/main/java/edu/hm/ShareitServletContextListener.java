@@ -10,7 +10,7 @@ import com.google.inject.servlet.ServletModule;
 import edu.hm.shareit.Services.CarService;
 import edu.hm.shareit.Services.CarServiceFunctionality;
 import edu.hm.shareit.persistence.DatabaseManager;
-import edu.hm.shareit.persistence.DatabaseManagerImpl;
+import edu.hm.shareit.persistence.DatabaseManagerFunctionality;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
@@ -26,7 +26,7 @@ public class ShareitServletContextListener extends GuiceServletContextListener {
         @Override
         protected void configureServlets() {
             bind(CarServiceFunctionality.class).to(CarService.class);
-            bind(DatabaseManager.class).to(DatabaseManagerImpl.class);
+            bind(DatabaseManagerFunctionality.class).to(DatabaseManager.class);
             bind(SessionFactory.class).toInstance(new Configuration().configure().buildSessionFactory());
         }
     });
