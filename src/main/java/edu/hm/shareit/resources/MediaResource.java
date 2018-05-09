@@ -123,11 +123,11 @@ public class MediaResource {
         CarPaket[] list = cs.getPakets();
         String json = "";
         ObjectMapper mapper = new ObjectMapper();
-        String json = "\"Message\":\"error\"";
         try {
             json = mapper.writeValueAsString(list);
         } catch (JsonProcessingException e) {
             log.warn("Encountered " + e.getClass());
+            json = "\"Message\":\"error\"";
         }
         return Response
                 .status(Response.Status.OK)
@@ -144,7 +144,7 @@ public class MediaResource {
         String message = cs.submitOrder(order);
         return Response
                 .status(Response.Status.OK)
-                .entity("\"status\":\"" + carService.submitProduct(car) + "\"")
+                .entity("\"status\":\""+message+"\"")
                 .build();
     }
 
