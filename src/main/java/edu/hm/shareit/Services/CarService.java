@@ -1,22 +1,52 @@
 package edu.hm.shareit.Services;
 
 import edu.hm.shareit.models.*;
+import edu.hm.shareit.persistence.DatabaseManager;
+
+import javax.inject.Inject;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
- * @author Markus Krahl
+ * Created by Markus Krahl, Thomas Murschallon 21.04.17.
  */
-public interface CarService {
+public class CarService implements CarServiceFunctionality {
+
+    private DatabaseManager dbMan;
 
 
-    Brand[] getBrands();
+    /**
+     * Constructor.
+     * @param dbMan 
+     */
+    @Inject
+    public CarService(DatabaseManager dbMan) {
+        this.dbMan = dbMan;
+    }
 
-    BrandType[] getTypes(Brand brand);
+    public String submitOrder(Order Order){
+        return "successful";
+    }
 
-    BrandType[] getAllTypes();
+    public Brand[] getBrands(){
+        return new Brand[0];
+    }
 
-    CarPaket[] getPakets();
+    public BrandType[] getTypes(Brand brand){
+        return new BrandType[0];
+    }
 
-    Attribute[] getAttributes();
+    public CarPaket[] getPakets(){
+        return new CarPaket[0];
+    }
 
-    String submitOrder(Order order);
+    @Override
+    public Attribute[] getAttributes() {
+        return new Attribute[0];
+    }
+
+    @Override
+    public BrandType[] getAllTypes() {
+        return new BrandType[0];
+    }
 }
