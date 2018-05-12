@@ -1,21 +1,21 @@
 package edu.hm.shareit.Services;
 
-import edu.hm.shareit.models.Car;
+import edu.hm.shareit.models.*;
 
 /**
  * @author Markus Krahl
  */
 public interface CarServiceFunctionality {
 
-    /**
-     *
-     * @return MediaServiceResult
-     */
-    Car[] getProducts();
+    Brand[] getBrands();
 
-    /**
-     *
-     * @return MediaServiceResult
-     */
-    String submitProduct(Car car);
+    BrandType[] getTypes(Brand brand);
+
+    BrandType[] getAllTypes();
+
+    CarPackage[] getPakets();
+
+    CarAttribute[] getAttributes();
+
+    String submitOrder(Order order);
 }

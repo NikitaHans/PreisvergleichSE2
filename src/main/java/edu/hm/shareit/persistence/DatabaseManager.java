@@ -3,9 +3,7 @@ package edu.hm.shareit.persistence;
 
 import java.util.List;
 import java.util.concurrent.Callable;
-
 import javax.inject.Inject;
-
 import edu.hm.shareit.models.Car;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
@@ -16,7 +14,6 @@ import org.hibernate.Transaction;
 import edu.hm.ShareitServletContextListener;
 
 /**
- * Implementation of interface DatabaseManagerFunctionality.
  * @author Thomas Murschall
  *
  */

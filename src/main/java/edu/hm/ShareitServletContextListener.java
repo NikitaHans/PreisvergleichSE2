@@ -4,13 +4,10 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.GuiceServletContextListener;
 import com.google.inject.servlet.ServletModule;
-
-//import edu.hm.shareit.persistence.MediaPersistence;
-//import edu.hm.shareit.persistence.MediaPersistenceImpl;
 import edu.hm.shareit.Services.CarServiceFunctionality;
 import edu.hm.shareit.Services.CarService;
-import edu.hm.shareit.persistence.DatabaseManagerFunctionality;
 import edu.hm.shareit.persistence.DatabaseManager;
+import edu.hm.shareit.persistence.DatabaseManagerFunctionality;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
