@@ -1,11 +1,9 @@
 package edu.hm.shareit.resources;
 
-
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.hm.shareit.Services.CarServiceFunctionality;
-import edu.hm.shareit.models.Car;
+import edu.hm.shareit.Services.CarService;
+import edu.hm.shareit.models.*;
 import org.apache.log4j.Logger;
 
 import javax.inject.Inject;
@@ -19,60 +17,82 @@ import javax.ws.rs.core.*;
  * Important is the URI-pattern-matching.
  * Each annotation can be related to a part of an URI-request
  */
-@Path("/start")
+@Path("/service")
 public class MediaResource {
 
-    private final CarServiceFunctionality carService;
+    private final CarService carService;
     private final Logger log = Logger.getLogger(this.getClass());
 
-    /**
-     * Constructor of class.
-     * carService is class for business logic, this is only an example and business logic is not used
-     * @param carService
-     */
     @Inject
-    public MediaResource(CarServiceFunctionality carService) {
+    public MediaResource(CarService carService) {
         this.carService = carService;
     }
 
 
-    /**
-     * Returns the sample created car.
-     * @return Response with status
-     */
     @GET
-    @Path("/get")
+    @Path("/brands")
     @Produces("application/json")
-    public Response getBooks() {
-        log.info("entered getBooks");
-        Car[] list = carService.getProducts();
+    public Response getBrands() {
+        log.info("Received getBrands request");
+        return buildResponse(mapJson(carService.getBrands()));
+    }
+
+    @GET
+    @Path("/attributes")
+    @Produces("application/json")
+    public Response getAttributes() {
+        log.info("Received getAttributes request");
+        return buildResponse(mapJson(carService.getAttributes()));
+    }
+
+    @GET
+    @Path("/brandtypes")
+    @Produces("application/json")
+    public Response getAllTypes() {
+        log.info("Received getAllTypes request");
+        return buildResponse(mapJson(carService.getAllTypes()));
+    }
+
+    @GET
+    @Path("/brandtypes/{brand}")
+    @Produces("application/json")
+    public Response getType(@PathParam("brand") Brand brand) {
+        log.info("Received getType request");
+        return buildResponse(mapJson(carService.getTypes(brand)));
+    }
+
+    @GET
+    @Path("/packets")
+    @Produces("application/json")
+    public Response getPackets() {
+        log.info("Received getPackets request");
+        return buildResponse(mapJson(carService.getPakets()));
+    }
+
+    @POST
+    @Path("/submit")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public Response createCar(Order order) {
+        log.info("Received createCar request");
+        return buildResponse("\"status\":\"" + carService.submitOrder(order) + "\"");
+    }
+
+    //HELPER METHODS
+    private String mapJson(Object[] list) {
         ObjectMapper mapper = new ObjectMapper();
-        String json = "\"Message\":\"error\"";
         try {
-            json = mapper.writeValueAsString(list);
+            return mapper.writeValueAsString(list);
         } catch (JsonProcessingException e) {
             log.warn("Encountered " + e.getClass());
+            return "\"Message\":\"error\"";
         }
+    }
+
+    private Response buildResponse(String json) {
         return Response
                 .status(Response.Status.OK)
                 .entity(json)
-                .build();
-    }
-
-    /**
-     * Insert a new car to the list.
-     * @param car the new car
-     * @return Response with status
-     */
-    @POST
-    @Path("/post")
-    @Produces("application/json")
-    @Consumes("application/json")
-    public Response insertCar(Car car) {
-        log.info("entered insertCar");
-        return Response
-                .status(Response.Status.OK)
-                .entity("\"status\":\"" + carService.submitProduct(car) + "\"")
                 .build();
     }
 

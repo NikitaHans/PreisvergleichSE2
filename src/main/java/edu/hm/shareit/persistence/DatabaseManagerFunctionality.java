@@ -25,6 +25,6 @@ public interface DatabaseManagerFunctionality {
      * 
      * @return . 
      */
-    List getAllCars();
+    List<Car> getAllCars();
     
 }
