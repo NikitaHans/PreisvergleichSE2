@@ -4,6 +4,6 @@ public class Order {
     private String name;
 
     private Brand brand;
-    private CarPaket paket;
-    private Attribute[] attributes;
+    private CarPackage paket;
+    private CarAttribute[] attributes;
 }

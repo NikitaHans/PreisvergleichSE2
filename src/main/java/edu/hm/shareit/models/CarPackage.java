@@ -1,11 +1,11 @@
 package edu.hm.shareit.models;
 
-public class CarPaket {
+public class CarPackage {
 
     private String name;
-    private Attribute[] inclAttributes;
+    private CarAttribute[] inclAttributes;
 
-    public CarPaket(String name, Attribute[] attributes){
+    public CarPackage(String name, CarAttribute[] attributes){
         this.name = name;
         this.inclAttributes = attributes;
     }

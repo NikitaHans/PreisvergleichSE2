@@ -10,8 +10,10 @@ import edu.hm.shareit.models.*;
 import org.apache.log4j.Logger;
 
 import javax.inject.Inject;
+import javax.validation.constraints.AssertFalse;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import java.util.List;
 
 
 /**
@@ -23,12 +25,14 @@ import javax.ws.rs.core.*;
 @Path("/service")
 public class MediaResource {
 
-    private final CarServiceFunctionality cs;
+    private final CarService carService;
     private final Logger log = Logger.getLogger(this.getClass());
 
+    private String json;
+
     @Inject
-    public MediaResource(CarServiceFunctionality carService) {
-        this.cs = carService;
+    public MediaResource(CarService carService) {
+        this.carService = carService;
     }
 
 
@@ -36,92 +40,58 @@ public class MediaResource {
     @Path("/brands")
     @Produces("application/json")
     public Response getBrands() {
-
-        Brand[] list = cs.getBrands();
-        String json = "";
-        ObjectMapper mapper = new ObjectMapper();
-
-        try {
-            json = mapper.writeValueAsString(list);
-        } catch (JsonProcessingException e) {
-            json = "\"Message\":\"error\"";
-        }
-
-        return Response
-                .status(Response.Status.OK)
-                .entity(json)
-                .build();
+        log.info("Received getBrands request");
+        mapJson(carService.getBrands());
+        return buildResponse();
     }
 
     @GET
     @Path("/attributes")
     @Produces("application/json")
     public Response getAttributes() {
-
-        Attribute[] list = cs.getAttributes();
-        String json = "";
-        ObjectMapper mapper = new ObjectMapper();
-
-        try {
-            json = mapper.writeValueAsString(list);
-        } catch (JsonProcessingException e) {
-            json = "\"Message\":\"error\"";
-        }
-
-        return Response
-                .status(Response.Status.OK)
-                .entity(json)
-                .build();
+        log.info("Received getAttributes request");
+        mapJson(carService.getAttributes());
+        return buildResponse();
     }
 
     @GET
     @Path("/brandtypes")
     @Produces("application/json")
     public Response getAllTypes() {
-
-        BrandType[] list = cs.getAllTypes();
-        String json = "";
-        ObjectMapper mapper = new ObjectMapper();
-
-        try {
-            json = mapper.writeValueAsString(list);
-        } catch (JsonProcessingException e) {
-            json = "\"Message\":\"error\"";
-        }
-
-        return Response
-                .status(Response.Status.OK)
-                .entity(json)
-                .build();
+        log.info("Received getAllTypes request");
+        mapJson(carService.getAllTypes());
+        return buildResponse();
     }
 
     @GET
     @Path("/brandtypes/{brand}")
     @Produces("application/json")
     public Response getType(@PathParam("brand") Brand brand) {
-
-        BrandType[] list = cs.getTypes(brand);
-        String json = "";
-        ObjectMapper mapper = new ObjectMapper();
-
-        try {
-            json = mapper.writeValueAsString(list);
-        } catch (JsonProcessingException e) {
-            json = "\"Message\":\"error\"";
-        }
-
-        return Response
-                .status(Response.Status.OK)
-                .entity(json)
-                .build();
+        log.info("Received getType request");
+        mapJson(carService.getTypes(brand));
+        return buildResponse();
     }
 
     @GET
     @Path("/packets")
     @Produces("application/json")
     public Response getPackets() {
-        CarPaket[] list = cs.getPakets();
-        String json = "";
+        log.info("Received getPackets request");
+        mapJson(carService.getPakets());
+        return buildResponse();
+    }
+
+    @POST
+    @Path("/submit")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public Response createCar(Order order) {
+        log.info("Received createCar request");
+        return buildResponse("\"status\":\"" + carService.submitOrder(order) + "\"");
+    }
+
+    //HELPER METHODS
+    private void mapJson(Object[] list) {
         ObjectMapper mapper = new ObjectMapper();
         try {
             json = mapper.writeValueAsString(list);
@@ -129,22 +99,16 @@ public class MediaResource {
             log.warn("Encountered " + e.getClass());
             json = "\"Message\":\"error\"";
         }
-        return Response
-                .status(Response.Status.OK)
-                .entity(json)
-                .build();
     }
 
+    private Response buildResponse() {
+        return buildResponse(null);
+    }
 
-    @POST
-    @Path("/submit")
-    @Produces("application/json")
-    @Consumes("application/json")
-    public Response createCar(Order order) {
-        String message = cs.submitOrder(order);
+    private Response buildResponse(String entity) {
         return Response
                 .status(Response.Status.OK)
-                .entity("\"status\":\""+message+"\"")
+                .entity(entity == null ? json : entity)
                 .build();
     }
 

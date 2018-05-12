@@ -13,9 +13,9 @@ public interface CarServiceFunctionality {
 
     BrandType[] getAllTypes();
 
-    CarPaket[] getPakets();
+    CarPackage[] getPakets();
 
-    Attribute[] getAttributes();
+    CarAttribute[] getAttributes();
 
     String submitOrder(Order order);
 }
