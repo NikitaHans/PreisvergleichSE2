@@ -80,6 +80,12 @@ public class MediaResource {
 
     //HELPER METHODS
     private String mapJson(Object[] list) {
+        String response = mapJsonFunctionality(list);
+        log.info("Response send was " + response);
+        return response;
+    }
+
+    private String mapJsonFunctionality(Object[] list) {
         ObjectMapper mapper = new ObjectMapper();
         try {
             return mapper.writeValueAsString(list);
