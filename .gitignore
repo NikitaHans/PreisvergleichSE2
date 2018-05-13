@@ -2,3 +2,5 @@ target/
 .idea/
 shareit-db.tmp/
 ShareIt.iml
+shareit-db.lck
+shareit-db.properties
