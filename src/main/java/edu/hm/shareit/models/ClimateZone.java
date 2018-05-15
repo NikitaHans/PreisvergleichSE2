@@ -15,4 +15,15 @@ public enum ClimateZone {
         this.highTemp = highTemp;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public int getLowTemp() {
+        return lowTemp;
+    }
+
+    public int getHighTemp() {
+        return highTemp;
+    }
 }

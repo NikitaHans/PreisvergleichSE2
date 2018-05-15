@@ -3,6 +3,7 @@ package edu.hm.shareit.resources;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.hm.shareit.Services.CarService;
+import edu.hm.shareit.Services.CarServiceFunctionality;
 import edu.hm.shareit.models.*;
 import org.apache.log4j.Logger;
 
@@ -20,11 +21,11 @@ import javax.ws.rs.core.*;
 @Path("/service")
 public class MediaResource {
 
-    private final CarService carService;
+    private final CarServiceFunctionality carService;
     private final Logger log = Logger.getLogger(this.getClass());
 
     @Inject
-    public MediaResource(CarService carService) {
+    public MediaResource(CarServiceFunctionality carService) {
         this.carService = carService;
     }
 

@@ -1,5 +1,7 @@
 package edu.hm.shareit.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import java.util.LinkedList;
 import java.util.List;
 

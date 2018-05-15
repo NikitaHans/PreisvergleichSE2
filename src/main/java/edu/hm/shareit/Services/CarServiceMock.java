@@ -54,16 +54,16 @@ public class CarServiceMock implements CarServiceFunctionality {
         b4 = new Brand("VW");
         b5 = new Brand("Skoda");
 
-        bt1 = new BrandType("M!",b1);
-        bt2 = new BrandType("M$",b1);
-        bt3 = new BrandType("A3",b2);
-        bt4 = new BrandType("A8",b2);
-        bt5 = new BrandType("S",b3);
-        bt6 = new BrandType("C",b3);
-        bt7 = new BrandType("Golf",b4);
-        bt8 = new BrandType("Tiguan",b4);
-        bt9 = new BrandType("Yeti",b5);
-        bt10 = new BrandType("Octavia",b5);
+        bt1 = new BrandType("M1");
+        bt2 = new BrandType("M3");
+        bt3 = new BrandType("A3");
+        bt4 = new BrandType("A8");
+        bt5 = new BrandType("S");
+        bt6 = new BrandType("C");
+        bt7 = new BrandType("Golf");
+        bt8 = new BrandType("Tiguan");
+        bt9 = new BrandType("Yeti");
+        bt10 = new BrandType("Octavia");
 
         c1 = new CarAttribute("Climacontrol", ClimateZone.HOT);
         c2 = new CarAttribute("Heating", ClimateZone.COLD);
