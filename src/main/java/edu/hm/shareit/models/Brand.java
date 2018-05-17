@@ -15,8 +15,9 @@ public class Brand {
         types = new LinkedList<>();
     }
 
-    public boolean addType(BrandType type){
-        return types.add(type);
+    public Brand addType(BrandType type){
+        types.add(type);
+        return this;
     }
 
     public String getName(){
