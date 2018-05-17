@@ -8,4 +8,12 @@ public class CarAttribute {
         this.name = name;
         this.zone = climateZone;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public ClimateZone getZone() {
+        return zone;
+    }
 }

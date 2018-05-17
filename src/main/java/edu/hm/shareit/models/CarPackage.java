@@ -9,4 +9,12 @@ public class CarPackage {
         this.name = name;
         this.inclAttributes = attributes;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public CarAttribute[] getInclAttributes() {
+        return inclAttributes;
+    }
 }
