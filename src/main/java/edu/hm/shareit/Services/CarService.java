@@ -11,19 +11,24 @@ import javax.inject.Inject;
 public class CarService implements CarServiceFunctionality {
 
     private DatabaseManager databaseManager;
+    private RequestValidationService requestValidationService;
+    public static final String SUCCESS_RESPONSE = "successful";
+    public static final String FAILURE_RESPONSE = "failed";
 
 
     /**
      * Constructor.
      * @param databaseManager
+     * @param requestValidationService
      */
     @Inject
-    public CarService(DatabaseManager databaseManager) {
+    public CarService(DatabaseManager databaseManager, RequestValidationService requestValidationService) {
         this.databaseManager = databaseManager;
+        this.requestValidationService = requestValidationService;
     }
 
     public String submitOrder(Order Order){
-        return "successful";
+        return requestValidationService.determineIfValid(Order) ? SUCCESS_RESPONSE : FAILURE_RESPONSE;
     }
 
     public Brand[] getBrands(){
