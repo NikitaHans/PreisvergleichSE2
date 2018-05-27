@@ -10,7 +10,7 @@ public class CarServiceMock implements CarServiceFunctionality {
     private ArrayList<CarAttribute> attributeList;
     private ArrayList<CarPackage> packageList;
 
-    private final String[] defaultBrands = {"BMW", "Audi", "Merceds", "VW", "Skoda"};
+    private final String[] defaultBrands = {"BMW", "Audi", "Mercedes", "VW", "Skoda"};
     private final String[] defaultBrandTypes = {"M1", "M3", "A3", "A8", "S", "C", "Golf", "Tiguan", "Yeti", "Octavia"};
 
     public CarServiceMock(){
@@ -19,6 +19,8 @@ public class CarServiceMock implements CarServiceFunctionality {
     }
 
     private void setUpDefaultCars(){
+        carList = new ArrayList<>();
+
         carList.add(new Car(defaultBrands[0], defaultBrandTypes[0]));
         carList.add(new Car(defaultBrands[0], defaultBrandTypes[1]));
         carList.add(new Car(defaultBrands[1], defaultBrandTypes[2]));
@@ -58,7 +60,7 @@ public class CarServiceMock implements CarServiceFunctionality {
 
     @Override
     public Brand[] getBrands() {
-        List<Brand> res = new LinkedList<>();
+        Set<Brand> res = new HashSet<>();
 
         for(Car carObject : carList){
             res.add(new Brand(carObject.getBrand()));

@@ -1,3 +1,3 @@
 /*C3*/SET SCHEMA PUBLIC
 drop table TCar if exists
-create table TCar (serial varchar(255) not null, brand varchar(255), modelName varchar(255), primary key (serial))
+create table TCar (brand varchar(255) not null, modelName varchar(255) not null, primary key (brand, modelName))
