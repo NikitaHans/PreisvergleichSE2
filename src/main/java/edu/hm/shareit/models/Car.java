@@ -13,7 +13,6 @@ import javax.persistence.Table;
 @Table(name = "TCar")
 public class Car {
 
-    @Id private String serial;
     private String brand;
     private String modelName;
 
@@ -25,13 +24,11 @@ public class Car {
 
     /**
      * Constructor.
-     * @param serial
      * @param brand
      * @param modelName
      */
 
-    public Car(String serial, String brand, String modelName) {
-        this.serial = serial;
+    public Car(String brand, String modelName) {
         this.brand = brand;
         this.modelName = modelName;
     }
@@ -40,9 +37,6 @@ public class Car {
         return brand;
     }
 
-    public String getSerial() {
-        return serial;
-    }
 
     public String getModelName() {
         return modelName;

@@ -2,14 +2,11 @@ package edu.hm.shareit.Services;
 
 import edu.hm.shareit.models.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class CarServiceMock implements CarServiceFunctionality {
 
-    private ArrayList<Brand> brandList;
+    private ArrayList<Car> carList;
     private ArrayList<CarAttribute> attributeList;
     private ArrayList<CarPackage> packageList;
 
@@ -17,21 +14,21 @@ public class CarServiceMock implements CarServiceFunctionality {
     private final String[] defaultBrandTypes = {"M1", "M3", "A3", "A8", "S", "C", "Golf", "Tiguan", "Yeti", "Octavia"};
 
     public CarServiceMock(){
-        setUpDefaultBrands();
+        setUpDefaultCars();
         setUpDefaultCarPackages();
     }
 
-    private void setUpDefaultBrands() {
-        int index = 0;
-        brandList = new ArrayList<>();
-        for( String brandName : defaultBrands) {
-            brandList.add(
-                    new Brand(brandName)
-                            .addType(new BrandType(defaultBrandTypes[index]))
-                            .addType(new BrandType(defaultBrandTypes[index + 1]))
-            );
-            index++;
-        }
+    private void setUpDefaultCars(){
+        carList.add(new Car(defaultBrands[0], defaultBrandTypes[0]));
+        carList.add(new Car(defaultBrands[0], defaultBrandTypes[1]));
+        carList.add(new Car(defaultBrands[1], defaultBrandTypes[2]));
+        carList.add(new Car(defaultBrands[1], defaultBrandTypes[3]));
+        carList.add(new Car(defaultBrands[2], defaultBrandTypes[4]));
+        carList.add(new Car(defaultBrands[2], defaultBrandTypes[5]));
+        carList.add(new Car(defaultBrands[3], defaultBrandTypes[6]));
+        carList.add(new Car(defaultBrands[3], defaultBrandTypes[7]));
+        carList.add(new Car(defaultBrands[4], defaultBrandTypes[8]));
+        carList.add(new Car(defaultBrands[4], defaultBrandTypes[9]));
     }
 
     private void setUpDefaultCarPackages() {
@@ -61,29 +58,36 @@ public class CarServiceMock implements CarServiceFunctionality {
 
     @Override
     public Brand[] getBrands() {
-        Brand[] array = new Brand[brandList.size()];
-        return brandList.toArray(array);
+        List<Brand> res = new LinkedList<>();
+
+        for(Car carObject : carList){
+            res.add(new Brand(carObject.getBrand()));
+        }
+
+        Brand[] array = new Brand[res.size()];
+        return res.toArray(array);
     }
 
     @Override
     public BrandType[] getTypes(Brand brand) {
-       for (Brand brandA : brandList){
-           if(brandA.getName().equals(brand.getName())){
-               return (BrandType[]) brandA.getTypes().toArray();
+        List<BrandType> res = new LinkedList<>();
+       for (Car car : carList){
+           if(car.getBrand().equals(brand.getName())){
+               res.add(new BrandType(car.getModelName()));
            }
        }
-       return new BrandType[0];
+       return res.toArray(new BrandType[res.size()]);
     }
 
     @Override
     public BrandType[] getAllTypes() {
-        BrandType[] returnTypeArray = new BrandType[defaultBrandTypes.length];
-        int index = 0;
-        for(String brandTypeName : defaultBrandTypes) {
-            returnTypeArray[index] = new BrandType(brandTypeName);
-            index++;
+        List<BrandType> res = new LinkedList<>();
+
+        for(Car car : carList){
+            res.add(new BrandType(car.getModelName()));
         }
-        return returnTypeArray;
+
+        return res.toArray(new BrandType[res.size()]);
     }
 
     @Override
