@@ -118,11 +118,11 @@ public class CarServiceMock implements CarServiceFunctionality {
 
         Map<String, Object> paket = new HashMap<>();
         paket.put("name", "BlubPaket");
-        paket.put("name", 20000);
+        paket.put("preis", 20000);
 
         Map<String, Object> attr = new HashMap<>();
         attr.put("name", "Fensterheber");
-        attr.put("name", 2000);
+        attr.put("preis", 2000);
 
         List<Map<String, Object>> attributes = new ArrayList<>();
         attributes.add(attr);
@@ -135,6 +135,7 @@ public class CarServiceMock implements CarServiceFunctionality {
                 .setPaket(paket)
                 .setAttributes(attributes)
                 .setUberfuhrung(50);
+        cars.add(car);
         cars.add(car);
 
         CarDto[] carss = new CarDto[cars.size()];
