@@ -3,7 +3,13 @@ package edu.hm.shareit.Services;
 
 import edu.hm.shareit.models.*;
 import edu.hm.shareit.persistence.DatabaseManager;
+import org.omg.CORBA.INTERNAL;
+
 import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Markus Krahl, Thomas Murschallon 21.04.17.
@@ -47,4 +53,7 @@ public class CarService implements CarServiceFunctionality {
     public BrandType[] getAllTypes() {
         return new BrandType[0];
     }
+
+    public CarDto[] submitOrder(OrderDto order){ return new CarDto[0]; }
+
 }

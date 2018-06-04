@@ -108,4 +108,36 @@ public class CarServiceMock implements CarServiceFunctionality {
     public String submitOrder(Order order) {
         return "{\"message\":\"successful\"}";
     }
+
+    @Override
+    public CarDto[] submitOrder(OrderDto order) {
+        List<CarDto> cars = new ArrayList<>();
+        Map<String, Object> type = new HashMap<>();
+        type.put("name", "3");
+        type.put("preis", 36000);
+
+        Map<String, Object> paket = new HashMap<>();
+        paket.put("name", "BlubPaket");
+        paket.put("name", 20000);
+
+        Map<String, Object> attr = new HashMap<>();
+        attr.put("name", "Fensterheber");
+        attr.put("name", 2000);
+
+        List<Map<String, Object>> attributes = new ArrayList<>();
+        attributes.add(attr);
+        attributes.add(attr);
+
+        CarDto car = new CarDto();
+        car
+                .setBrand("BMW")
+                .setType(type)
+                .setPaket(paket)
+                .setAttributes(attributes);
+        cars.add(car);
+
+        CarDto[] carss = new CarDto[cars.size()];
+        carss = cars.toArray(carss);
+        return carss;
+    }
 }

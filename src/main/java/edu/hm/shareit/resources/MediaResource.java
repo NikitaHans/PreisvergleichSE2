@@ -74,9 +74,9 @@ public class MediaResource {
     @Path("/submit")
     @Produces("application/json")
     @Consumes("application/json")
-    public Response createCar(Order order) {
+    public Response createCar(OrderDto order) {
         log.info("Received createCar request");
-        return buildResponse("\"status\":\"" + carService.submitOrder(order) + "\"");
+        return buildResponse(mapJson(carService.submitOrder(order)));
     }
 
     //HELPER METHODS

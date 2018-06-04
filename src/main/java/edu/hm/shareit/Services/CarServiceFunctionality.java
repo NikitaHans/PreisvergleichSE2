@@ -18,4 +18,6 @@ public interface CarServiceFunctionality {
     CarAttribute[] getAttributes();
 
     String submitOrder(Order order);
+
+    CarDto[] submitOrder(OrderDto order);
 }
