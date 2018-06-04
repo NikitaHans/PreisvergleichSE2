@@ -133,7 +133,8 @@ public class CarServiceMock implements CarServiceFunctionality {
                 .setBrand("BMW")
                 .setType(type)
                 .setPaket(paket)
-                .setAttributes(attributes);
+                .setAttributes(attributes)
+                .setUberfuhrung(50);
         cars.add(car);
 
         CarDto[] carss = new CarDto[cars.size()];
