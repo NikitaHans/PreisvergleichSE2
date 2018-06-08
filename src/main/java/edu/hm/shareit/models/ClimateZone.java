@@ -1,29 +1,30 @@
 package edu.hm.shareit.models;
 
-public enum ClimateZone {
-    HOT("hot",25,40),
-    NORMAL("normal",10,25),
-    COLD("cold",-20,10);
 
-    private String name;
-    private int lowTemp;
-    private int highTemp;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-    ClimateZone(String name, int lowTemp, int highTemp){
-        this.name = name;
-        this.lowTemp = lowTemp;
-        this.highTemp = highTemp;
+@Entity
+@Table(name = "TZone")
+public class ClimateZone {
+
+   // public static final String HOT = "hot";
+   // public static final String NORMAL = "normal";
+   // public static final String COLD = "cold";
+
+
+    @Id private String zone;
+
+    public ClimateZone(){}
+
+    public ClimateZone(String zone){
+        this.zone = zone;
     }
 
-    public String getName() {
-        return name;
+    public String getZone(){
+        return this.zone;
     }
 
-    public int getLowTemp() {
-        return lowTemp;
-    }
 
-    public int getHighTemp() {
-        return highTemp;
-    }
 }

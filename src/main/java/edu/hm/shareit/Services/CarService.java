@@ -4,6 +4,10 @@ package edu.hm.shareit.Services;
 import edu.hm.shareit.models.*;
 import edu.hm.shareit.persistence.DatabaseManager;
 import javax.inject.Inject;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Markus Krahl, Thomas Murschallon 21.04.17.
@@ -26,25 +30,115 @@ public class CarService implements CarServiceFunctionality {
         return "successful";
     }
 
+    @Override
+    public String insertCar(Car car) {
+        String res;
+
+        try{
+            databaseManager.insertCar(car);
+            res = "success";
+        }
+        catch(Exception e){
+            res = "Error occurred";
+        }
+
+        return res;
+    }
+
+    @Override
+    public String insertPackage(CarPackage carPackage) {
+        String res;
+
+        try{
+            databaseManager.insertCarRackage(carPackage);
+            res = "success";
+        }
+        catch(Exception e){
+            res = "Error occurred";
+        }
+
+        return res;
+    }
+
+    @Override
+    public String insertAttribute(CarAttribute attribute) {
+        String res;
+
+        try{
+            databaseManager.insertCarAttribute(attribute);
+            res = "success";
+        }
+        catch(Exception e){
+            res = "Error occurred";
+        }
+
+        return res;
+    }
+
+    @Override
+    public String insertZone(ClimateZone zone) {
+        String res;
+
+        try{
+            databaseManager.insertClimateZone(zone);
+            res = "success";
+        }
+        catch(Exception e){
+            res = "Error occurred";
+        }
+
+        return res;
+    }
+
     public Brand[] getBrands(){
-        return new Brand[0];
+        List<Car> carList = getAllCars();
+
+        Set<Brand> res = new HashSet<>();
+
+        for(Car carObject : carList){
+            res.add(new Brand(carObject.getBrand()));
+        }
+
+        Brand[] array = new Brand[res.size()];
+        return res.toArray(array);
     }
 
     public BrandType[] getTypes(Brand brand){
-        return new BrandType[0];
+        List<Car> carList = getAllCars();
+        List<BrandType> res = new LinkedList<>();
+        for (Car car : carList){
+            if(car.getBrand().equals(brand.getName())){
+                res.add(new BrandType(car.getModelName()));
+            }
+        }
+        return res.toArray(new BrandType[res.size()]);
     }
 
     public CarPackage[] getPakets(){
-        return new CarPackage[0];
+        List<CarPackage> packageList = databaseManager.getAllPackages();
+        return packageList.toArray(new CarPackage[packageList.size()]);
     }
 
     @Override
     public CarAttribute[] getAttributes() {
-        return new CarAttribute[0];
+        List<CarAttribute> attributeList = databaseManager.getAllCarAttributes();
+        return attributeList.toArray(new CarAttribute[attributeList.size()]);
     }
 
     @Override
     public BrandType[] getAllTypes() {
-        return new BrandType[0];
+        List<Car> carList = getAllCars();
+
+        List<BrandType> res = new LinkedList<>();
+
+        for(Car car : carList){
+            res.add(new BrandType(car.getModelName()));
+        }
+
+        return res.toArray(new BrandType[res.size()]);
+    }
+
+    public List<Car> getAllCars(){
+        return databaseManager.getAllCars();
     }
 }

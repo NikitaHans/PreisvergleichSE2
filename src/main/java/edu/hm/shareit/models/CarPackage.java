@@ -1,12 +1,23 @@
 package edu.hm.shareit.models;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
+
+@Entity
+@Table(name = "TPackage")
 public class CarPackage {
 
-    private String name;
-    private ArrayList<CarAttribute> attributes;
+    @Id private String name;
+    @ManyToMany
+    private List<CarAttribute> attributes;
+
+    public CarPackage (){}
 
     public CarPackage(String name){
         this.name = name;

@@ -18,4 +18,12 @@ public interface CarServiceFunctionality {
     CarAttribute[] getAttributes();
 
     String submitOrder(Order order);
+
+    String insertCar(Car car);
+
+    String insertPackage (CarPackage carPackage);
+
+    String insertAttribute (CarAttribute attribute);
+
+    String insertZone (ClimateZone zone);
 }

@@ -23,7 +23,7 @@ public class ShareitServletContextListener extends GuiceServletContextListener {
     private static final Injector injector = Guice.createInjector(new ServletModule() {
         @Override
         protected void configureServlets() {
-            bind(CarServiceFunctionality.class).to(CarServiceMock.class);
+            bind(CarServiceFunctionality.class).to(CarService.class);
             bind(DatabaseManagerFunctionality.class).to(DatabaseManager.class);
             bind(SessionFactory.class).toInstance(new Configuration().configure().buildSessionFactory());
         }

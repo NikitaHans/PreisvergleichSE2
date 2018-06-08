@@ -74,9 +74,45 @@ public class MediaResource {
     @Path("/submit")
     @Produces("application/json")
     @Consumes("application/json")
-    public Response createCar(Order order) {
+    public Response createOrder(Order order) {
         log.info("Received createCar request");
-        return buildResponse("\"status\":\"" + carService.submitOrder(order) + "\"");
+        return buildResponse("{\"status\":\"" + carService.submitOrder(order) + "\"}");
+    }
+
+    @POST
+    @Path("/insert/car")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public Response insertCar(Car car) {
+        log.info("Received insertCar request");
+        return buildResponse("{\"status\":\"" + carService.insertCar(car) + "\"}");
+    }
+
+    @POST
+    @Path("/insert/package")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public Response insertPackage(CarPackage carPackage) {
+        log.info("Received insertPackage request");
+        return buildResponse("{\"status\":\"" + carService.insertPackage(carPackage) + "\"}");
+    }
+
+    @POST
+    @Path("/insert/zone")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public Response insertZone(ClimateZone zone) {
+        log.info("Received insertZone request");
+        return buildResponse("{\"status\":\"" + carService.insertZone(zone) + "\"}");
+    }
+
+    @POST
+    @Path("/insert/attribute")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public Response insertAttribute(CarAttribute attribute) {
+        log.info("Received insertAttribute request");
+        return buildResponse("{\"status\":\"" + carService.insertAttribute(attribute) + "\"}");
     }
 
     //HELPER METHODS
@@ -91,6 +127,7 @@ public class MediaResource {
         try {
             return mapper.writeValueAsString(list);
         } catch (JsonProcessingException e) {
+            e.printStackTrace();
             log.warn("Encountered " + e.getClass());
             return "\"Message\":\"error\"";
         }

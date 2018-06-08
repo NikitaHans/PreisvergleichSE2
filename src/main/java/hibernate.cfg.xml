@@ -18,6 +18,9 @@
         <property name="transaction.auto_close_session">true</property>
 
         <mapping class="edu.hm.shareit.models.Car" />
+        <mapping class="edu.hm.shareit.models.CarAttribute" />
+        <mapping class="edu.hm.shareit.models.CarPackage" />
+        <mapping class="edu.hm.shareit.models.ClimateZone" />
 
     </session-factory>
 

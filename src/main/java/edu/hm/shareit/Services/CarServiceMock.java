@@ -37,12 +37,12 @@ public class CarServiceMock implements CarServiceFunctionality {
         packageList = new ArrayList<>();
 
         attributeList = new ArrayList<>();
-        attributeList.add(new CarAttribute("Climacontrol", ClimateZone.HOT ));
-        attributeList.add(new CarAttribute("Heating", ClimateZone.COLD));
-        attributeList.add(new CarAttribute("Navigation", ClimateZone.NORMAL));
-        attributeList.add(new CarAttribute("Audio", ClimateZone.NORMAL));
-        attributeList.add(new CarAttribute("Window winder", ClimateZone.NORMAL));
-        attributeList.add(new CarAttribute("Snow chains", ClimateZone.COLD));
+        attributeList.add(new CarAttribute("Climacontrol", new LinkedList<ClimateZone>(){{add(new ClimateZone("hot"));}}));
+        attributeList.add(new CarAttribute("Heating",  new LinkedList<ClimateZone>(){{add(new ClimateZone("cold"));}}));
+        attributeList.add(new CarAttribute("Navigation",  new LinkedList<ClimateZone>(){{add(new ClimateZone("hot")); add(new ClimateZone("normal")); add(new ClimateZone("cold"));}}));
+        attributeList.add(new CarAttribute("Audio",  new LinkedList<ClimateZone>(){{add(new ClimateZone("cold")); add(new ClimateZone("normal")); add(new ClimateZone("hot"));}}));
+        attributeList.add(new CarAttribute("Window winder",  new LinkedList<ClimateZone>(){{add(new ClimateZone("hot")); add(new ClimateZone("normal")); add(new ClimateZone("cold"));}}));
+        attributeList.add(new CarAttribute("Snow chains",  new LinkedList<ClimateZone>(){{add(new ClimateZone("cold"));}}));
 
         HashMap<String, int[]>defaultCarPackages = new HashMap<>();
         defaultCarPackages.put("Sport",new int[]{0,3,5});
@@ -107,5 +107,25 @@ public class CarServiceMock implements CarServiceFunctionality {
     @Override
     public String submitOrder(Order order) {
         return "{\"message\":\"successful\"}";
+    }
+
+    @Override
+    public String insertCar(Car car) {
+        return "success";
+    }
+
+    @Override
+    public String insertPackage(CarPackage carPackage) {
+        return "success";
+    }
+
+    @Override
+    public String insertAttribute(CarAttribute attribute) {
+        return "success";
+    }
+
+    @Override
+    public String insertZone(ClimateZone zone) {
+        return "success";
     }
 }

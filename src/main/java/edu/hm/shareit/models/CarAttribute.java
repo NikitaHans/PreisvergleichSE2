@@ -1,19 +1,28 @@
 package edu.hm.shareit.models;
 
-public class CarAttribute {
-    private String name;
-    private ClimateZone zone;
+import javax.persistence.*;
+import java.util.List;
 
-    public CarAttribute(String name, ClimateZone climateZone){
+@Entity
+@Table(name = "TAttribute")
+public class CarAttribute {
+    @Id private String name;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<ClimateZone> zones;
+
+
+    public CarAttribute(){}
+
+    public CarAttribute(String name, List<ClimateZone> climateZone){
         this.name = name;
-        this.zone = climateZone;
+        this.zones = climateZone;
     }
 
     public String getName() {
         return name;
     }
 
-    public ClimateZone getZone() {
-        return zone;
+    public List<ClimateZone> getZones() {
+        return zones;
     }
 }
