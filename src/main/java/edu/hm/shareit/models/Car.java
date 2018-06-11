@@ -18,11 +18,17 @@ public class Car {
 
     @Id private String brand;
     @Id private String modelName;
+    private float basePrice;
+
+    public float getBasePrice() {
+        return basePrice;
+    }
 
     /**
      * Empty constructor for framework.
      */
     public Car() {
+
     }
 
     /**
@@ -31,9 +37,10 @@ public class Car {
      * @param modelName
      */
 
-    public Car(String brand, String modelName) {
+    public Car(String brand, String modelName, float basePrice) {
         this.brand = brand;
         this.modelName = modelName;
+        this.basePrice = basePrice;
     }
 
     public String getBrand() {
@@ -50,13 +57,14 @@ public class Car {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Car car = (Car) o;
-        return Objects.equals(brand, car.brand) &&
+        return Float.compare(car.basePrice, basePrice) == 0 &&
+                Objects.equals(brand, car.brand) &&
                 Objects.equals(modelName, car.modelName);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(brand, modelName);
+        return Objects.hash(brand, modelName, basePrice);
     }
 }

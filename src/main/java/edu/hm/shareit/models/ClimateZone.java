@@ -9,10 +9,6 @@ import javax.persistence.Table;
 @Table(name = "TZone")
 public class ClimateZone {
 
-   // public static final String HOT = "hot";
-   // public static final String NORMAL = "normal";
-   // public static final String COLD = "cold";
-
 
     @Id private String zone;
 
