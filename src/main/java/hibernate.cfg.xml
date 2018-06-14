@@ -22,6 +22,7 @@
         <mapping class="edu.hm.shareit.models.CarPackage" />
         <mapping class="edu.hm.shareit.models.ClimateZone" />
         <mapping class="edu.hm.shareit.models.Nation" />
+        <mapping class="edu.hm.shareit.models.User" />
 
     </session-factory>
 

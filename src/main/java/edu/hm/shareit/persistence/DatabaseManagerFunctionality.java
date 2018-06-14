@@ -26,7 +26,11 @@ public interface DatabaseManagerFunctionality {
 
     void insertCarAttribute(CarAttribute attribute);
 
-    void insertClimateZone(String zone);
+    void insertClimateZone(ClimateZone zone);
+
+    void insertNation(Nation nation);
+
+    void insertUser(User user);
 
     /**
      * 
@@ -37,5 +41,7 @@ public interface DatabaseManagerFunctionality {
     List<CarPackage> getAllPackages();
 
     List<CarAttribute> getAllCarAttributes();
+
+    User getUser(String mail);
     
 }

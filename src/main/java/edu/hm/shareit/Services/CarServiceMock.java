@@ -103,8 +103,8 @@ public class CarServiceMock implements CarServiceFunctionality {
     }
 
     @Override
-    public String submitOrder(Order order) {
-        return "{\"message\":\"successful\"}";
+    public Order submitOrder(Order order) {
+        return order;
     }
 
     @Override
@@ -123,7 +123,23 @@ public class CarServiceMock implements CarServiceFunctionality {
     }
 
     @Override
-    public String insertZone(String zone) {
-        return "success";
+    public String insertNation(Nation nation) {
+        return null;
     }
+
+    @Override
+    public String insertUser(User user) {
+        return null;
+    }
+
+    @Override
+    public String verifyUser(Login login) {
+        return null;
+    }
+
+    @Override
+    public Order verifyOrder(Order order) {
+        return null;
+    }
+
 }

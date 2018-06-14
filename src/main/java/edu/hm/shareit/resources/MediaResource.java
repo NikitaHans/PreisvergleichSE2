@@ -89,6 +89,24 @@ public class MediaResource {
     }
 
     @POST
+    @Path("/insert/user")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public Response insertUser(User user) {
+        log.info("Received insertCar request");
+        return buildResponse("{\"status\":\"" + carService.insertUser(user) + "\"}");
+    }
+
+    @POST
+    @Path("/verify/user")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public Response Login(Login loginAttempt) {
+        log.info("Received insertCar request");
+        return buildResponse("{\"token\":\"" + carService.verifyUser(loginAttempt) + "\"}");
+    }
+
+    @POST
     @Path("/insert/package")
     @Produces("application/json")
     @Consumes("application/json")
@@ -98,12 +116,12 @@ public class MediaResource {
     }
 
     @POST
-    @Path("/insert/zone")
+    @Path("/insert/nation")
     @Produces("application/json")
     @Consumes("application/json")
-    public Response insertZone(String zone) {
+    public Response insertZone(Nation nation) {
         log.info("Received insertZone request");
-        return buildResponse("{\"status\":\"" + carService.insertZone(zone) + "\"}");
+        return buildResponse("{\"status\":\"" + carService.insertNation(nation) + "\"}");
     }
 
     @POST

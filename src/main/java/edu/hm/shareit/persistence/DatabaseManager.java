@@ -27,6 +27,10 @@ public class DatabaseManager implements DatabaseManagerFunctionality {
     @Inject
     public DatabaseManager() {
         updateEntityManager();
+        insertClimateZone(new ClimateZone("hot"));
+        insertClimateZone(new ClimateZone("cold"));
+        insertClimateZone(new ClimateZone("normal"));
+        insertClimateZone(new ClimateZone("optional"));
     }
 
     public void insertOrder(Order order){
@@ -53,8 +57,14 @@ public class DatabaseManager implements DatabaseManagerFunctionality {
     }
 
     @Override
-    public void insertClimateZone(String zone) {
+    public void insertClimateZone(ClimateZone zone) {
         Runnable insertCar = ()-> entityManager.persist(zone);
+        transactionWrapper(insertCar);
+    }
+
+    @Override
+    public void insertNation(Nation nation) {
+        Runnable insertCar = ()-> entityManager.persist(nation);
         transactionWrapper(insertCar);
     }
 
@@ -74,9 +84,25 @@ public class DatabaseManager implements DatabaseManagerFunctionality {
         return transactionWrapper(getCars);
     }
 
-    public List<CarAttribute> getAllCarAttributes(String zone){
-        Callable<List<CarAttribute>> getCars = ()-> entityManager.createQuery("From CarAttribute where zone=" + zone).list();
-        return transactionWrapper(getCars);
+    public void insertUser(User user) {
+        Runnable insertUser = ()-> entityManager.persist(user);
+        transactionWrapper(insertUser);
+    }
+
+    public Nation getNation (String nation){
+        entityManager = ShareitServletContextListener.getInjectorInstance().getInstance(SessionFactory.class).getCurrentSession();
+        transaction = entityManager.beginTransaction();
+        Nation req = (Nation) entityManager.get(Nation.class, nation);
+        transaction.commit();
+        return req;
+    }
+
+    public User getUser(String mail){
+        entityManager = ShareitServletContextListener.getInjectorInstance().getInstance(SessionFactory.class).getCurrentSession();
+        transaction = entityManager.beginTransaction();
+        User req = (User) entityManager.get(User.class, mail);
+        transaction.commit();
+        return req;
     }
 
     private void transactionWrapper(Runnable func) {

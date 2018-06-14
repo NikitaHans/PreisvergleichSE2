@@ -7,7 +7,8 @@ import java.util.Objects;
 @Table(name = "TAttribute")
 public class CarAttribute {
     @Id private String name;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
+    @JoinColumn(name="zone")
     private ClimateZone zone;
     private float singlePrice;
 

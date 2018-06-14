@@ -18,10 +18,10 @@ public class Order {
 
     public Order(){}
 
-    public Order(Car car, CarPackage carPackage, String nation, CarAttribute... attributes){
+    public Order(Car car, CarPackage carPackage, CarAttribute... attributes){
         this.car = car;
         this.paket = carPackage;
-        this.nation = nation;
+        this.nation = "de";
         this.attributes = attributes;
         this.totalPrice = 0;
         this.verified = false;
@@ -29,6 +29,10 @@ public class Order {
 
     public void setTotalPrice(float totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public void setNation(String nation) {
+        this.nation = nation;
     }
 
     public void setVerified(boolean verified) {

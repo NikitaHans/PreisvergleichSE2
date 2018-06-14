@@ -8,7 +8,8 @@ import java.util.Objects;
 public class Nation {
     @Id
     private String name;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
+    @JoinColumn(name="zone")
     private ClimateZone climateZone;
 
     public Nation(){}

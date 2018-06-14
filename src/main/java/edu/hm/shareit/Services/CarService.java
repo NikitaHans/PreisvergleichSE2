@@ -3,11 +3,10 @@ package edu.hm.shareit.Services;
 
 import edu.hm.shareit.models.*;
 import edu.hm.shareit.persistence.DatabaseManager;
+import edu.hm.shareit.security.MySecurityManager;
+
 import javax.inject.Inject;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Markus Krahl, Thomas Murschallon 21.04.17.
@@ -26,8 +25,12 @@ public class CarService implements CarServiceFunctionality {
         this.databaseManager = databaseManager;
     }
 
-    public String submitOrder(Order Order){
-        return "successful";
+    public Order submitOrder(Order order){
+        order = verifyOrder(order);
+        if (order.isVerified()) {
+            this.databaseManager.insertOrder(order);
+        }
+        return order;
     }
 
     @Override
@@ -76,17 +79,39 @@ public class CarService implements CarServiceFunctionality {
     }
 
     @Override
-    public String insertZone(String zone) {
+    public String insertNation(Nation nation) {
         String res;
 
         try{
-            databaseManager.insertClimateZone(zone);
+            databaseManager.insertNation(nation);
             res = "success";
         }
         catch(Exception e){
             res = "Error occurred";
         }
 
+        return res;
+    }
+
+    @Override
+    public String insertUser(User user) {
+        String message = "Failed to create user";
+        if(databaseManager.getUser(user.getMail()) == null){
+            databaseManager.insertUser(user);
+            message = "User created successfully.";
+        }
+        return message;
+    }
+
+    @Override
+    public String verifyUser(Login login) {
+        String res = "0";
+        User user = databaseManager.getUser(login.getMail());
+        if (user != null){
+            if(user.getPassword().equals(login.getPassword())){
+                res = MySecurityManager.getToken(user);
+            }
+        }
         return res;
     }
 
@@ -140,5 +165,47 @@ public class CarService implements CarServiceFunctionality {
 
     public List<Car> getAllCars(){
         return databaseManager.getAllCars();
+    }
+
+    public boolean validUser(Token token){
+        return MySecurityManager.validateToken(token);
+    }
+
+    @Override
+    public Order verifyOrder( Order order) {
+        Nation nation = databaseManager.getNation(order.getNation());
+        ClimateZone climate = nation.getClimateZone();
+
+        // All attributest of order
+        List<CarAttribute> orderAttributes = Arrays.asList(order.getPaket().getAttributes());
+        orderAttributes.addAll(Arrays.asList(order.getAttributes()));
+
+        List<CarAttribute> allAtrribs = databaseManager.getAllCarAttributes();
+
+        List<CarAttribute> mandatory = new ArrayList<CarAttribute>();
+
+        for (Iterator<CarAttribute> iter = allAtrribs.iterator(); iter.hasNext();) {
+            CarAttribute next = iter.next();
+            if (!climate.equals(next.getZone())) {
+                mandatory.add(next);
+            }
+        }
+
+        List<CarAttribute> climateAtr = new ArrayList<CarAttribute>();
+
+        for (Iterator<CarAttribute> iter = orderAttributes.iterator(); iter.hasNext();) {
+            CarAttribute next = iter.next();
+            if (!climate.equals(next.getZone())) {
+                climateAtr.add(next);
+            }
+        }
+
+        boolean checkMandatory = climateAtr.containsAll(mandatory);
+
+        boolean optionalCheck = Arrays.stream(order.getAttributes())
+                .allMatch(attribute -> attribute.getZone().equals(new ClimateZone("Optional")));
+
+        order.setVerified(checkMandatory && optionalCheck);
+        return order;
     }
 }
