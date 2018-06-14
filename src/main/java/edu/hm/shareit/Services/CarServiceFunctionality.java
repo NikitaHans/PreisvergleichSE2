@@ -17,5 +17,19 @@ public interface CarServiceFunctionality {
 
     CarAttribute[] getAttributes();
 
-    String submitOrder(Order order);
+    Order submitOrder(Order order);
+
+    String insertCar(Car car);
+
+    String insertPackage (CarPackage carPackage);
+
+    String insertAttribute (CarAttribute attribute);
+
+    String insertNation (Nation nation);
+
+    String insertUser(User user);
+
+    String verifyUser(Login login);
+
+    Order verifyOrder(Order order);
 }

@@ -74,27 +74,83 @@ public class MediaResource {
     @Path("/submit")
     @Produces("application/json")
     @Consumes("application/json")
-    public Response createCar(Order order) {
+    public Response createOrder(Order order) {
         log.info("Received createCar request");
-        return buildResponse("\"status\":\"" + carService.submitOrder(order) + "\"");
+        return buildResponse(mapJson(carService.submitOrder(order)));
+    }
+
+    @POST
+    @Path("/insert/car")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public Response insertCar(Car car) {
+        log.info("Received insertCar request");
+        return buildResponse("{\"status\":\"" + carService.insertCar(car) + "\"}");
+    }
+
+    @POST
+    @Path("/insert/user")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public Response insertUser(User user) {
+        log.info("Received insertCar request");
+        return buildResponse("{\"status\":\"" + carService.insertUser(user) + "\"}");
+    }
+
+    @POST
+    @Path("/verify/user")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public Response Login(Login loginAttempt) {
+        log.info("Received insertCar request");
+        return buildResponse("{\"token\":\"" + carService.verifyUser(loginAttempt) + "\"}");
+    }
+
+    @POST
+    @Path("/insert/package")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public Response insertPackage(CarPackage carPackage) {
+        log.info("Received insertPackage request");
+        return buildResponse("{\"status\":\"" + carService.insertPackage(carPackage) + "\"}");
+    }
+
+    @POST
+    @Path("/insert/nation")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public Response insertZone(Nation nation) {
+        log.info("Received insertZone request");
+        return buildResponse("{\"status\":\"" + carService.insertNation(nation) + "\"}");
+    }
+
+    @POST
+    @Path("/insert/attribute")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public Response insertAttribute(CarAttribute attribute) {
+        log.info("Received insertAttribute request");
+        return buildResponse("{\"status\":\"" + carService.insertAttribute(attribute) + "\"}");
     }
 
     //HELPER METHODS
-    private String mapJson(Object[] list) {
+    private String mapJson(Object... list) {
         String response = mapJsonFunctionality(list);
         log.info("Response send was " + response);
         return response;
     }
 
-    private String mapJsonFunctionality(Object[] list) {
+    private String mapJsonFunctionality(Object... list) {
         ObjectMapper mapper = new ObjectMapper();
         try {
             return mapper.writeValueAsString(list);
         } catch (JsonProcessingException e) {
+            e.printStackTrace();
             log.warn("Encountered " + e.getClass());
             return "\"Message\":\"error\"";
         }
     }
+
 
     private Response buildResponse(String json) {
         return Response

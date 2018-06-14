@@ -21,28 +21,26 @@ public class CarServiceMock implements CarServiceFunctionality {
     private void setUpDefaultCars(){
         carList = new ArrayList<>();
 
-        carList.add(new Car(defaultBrands[0], defaultBrandTypes[0]));
-        carList.add(new Car(defaultBrands[0], defaultBrandTypes[1]));
-        carList.add(new Car(defaultBrands[1], defaultBrandTypes[2]));
-        carList.add(new Car(defaultBrands[1], defaultBrandTypes[3]));
-        carList.add(new Car(defaultBrands[2], defaultBrandTypes[4]));
-        carList.add(new Car(defaultBrands[2], defaultBrandTypes[5]));
-        carList.add(new Car(defaultBrands[3], defaultBrandTypes[6]));
-        carList.add(new Car(defaultBrands[3], defaultBrandTypes[7]));
-        carList.add(new Car(defaultBrands[4], defaultBrandTypes[8]));
-        carList.add(new Car(defaultBrands[4], defaultBrandTypes[9]));
+        carList.add(new Car(defaultBrands[0], defaultBrandTypes[0], 10.000f));
+        carList.add(new Car(defaultBrands[0], defaultBrandTypes[1], 10.000f));
+        carList.add(new Car(defaultBrands[1], defaultBrandTypes[2], 10.000f));
+        carList.add(new Car(defaultBrands[1], defaultBrandTypes[3], 10.000f));
+        carList.add(new Car(defaultBrands[2], defaultBrandTypes[4], 10.000f));
+        carList.add(new Car(defaultBrands[2], defaultBrandTypes[5], 10.000f));
+        carList.add(new Car(defaultBrands[3], defaultBrandTypes[6], 10.000f));
+        carList.add(new Car(defaultBrands[3], defaultBrandTypes[7], 10.000f));
+        carList.add(new Car(defaultBrands[4], defaultBrandTypes[8], 10.000f));
+        carList.add(new Car(defaultBrands[4], defaultBrandTypes[9], 10.000f));
     }
 
     private void setUpDefaultCarPackages() {
         packageList = new ArrayList<>();
 
         attributeList = new ArrayList<>();
-        attributeList.add(new CarAttribute("Climacontrol", ClimateZone.HOT ));
-        attributeList.add(new CarAttribute("Heating", ClimateZone.COLD));
-        attributeList.add(new CarAttribute("Navigation", ClimateZone.NORMAL));
-        attributeList.add(new CarAttribute("Audio", ClimateZone.NORMAL));
-        attributeList.add(new CarAttribute("Window winder", ClimateZone.NORMAL));
-        attributeList.add(new CarAttribute("Snow chains", ClimateZone.COLD));
+        attributeList.add(new CarAttribute("Climacontrol", new ClimateZone("hot"), 10.000f));
+        attributeList.add(new CarAttribute("Heating",  new ClimateZone("cold"), 10.000f));
+        attributeList.add(new CarAttribute("Window winder",  new ClimateZone("optional"), 10.000f));
+        attributeList.add(new CarAttribute("Snow chains",  new ClimateZone("cold"), 10.000f));
 
         HashMap<String, int[]>defaultCarPackages = new HashMap<>();
         defaultCarPackages.put("Sport",new int[]{0,3,5});
@@ -105,7 +103,43 @@ public class CarServiceMock implements CarServiceFunctionality {
     }
 
     @Override
-    public String submitOrder(Order order) {
-        return "{\"message\":\"successful\"}";
+    public Order submitOrder(Order order) {
+        return order;
     }
+
+    @Override
+    public String insertCar(Car car) {
+        return "success";
+    }
+
+    @Override
+    public String insertPackage(CarPackage carPackage) {
+        return "success";
+    }
+
+    @Override
+    public String insertAttribute(CarAttribute attribute) {
+        return "success";
+    }
+
+    @Override
+    public String insertNation(Nation nation) {
+        return null;
+    }
+
+    @Override
+    public String insertUser(User user) {
+        return null;
+    }
+
+    @Override
+    public String verifyUser(Login login) {
+        return null;
+    }
+
+    @Override
+    public Order verifyOrder(Order order) {
+        return null;
+    }
+
 }

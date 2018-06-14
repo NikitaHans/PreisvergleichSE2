@@ -1,3 +1,41 @@
 /*C3*/SET SCHEMA PUBLIC
+alter table TAttribute drop constraint FK6kac9skqmtkxlix2c8eb5mrvg
+alter table TNation drop constraint FKh68ykbr3lr48bkecjj6f5weyk
+alter table TPackage_TAttribute drop constraint FKq48lm7nk0q5hkusppid6a9vuh
+alter table TPackage_TAttribute drop constraint FK1b1wchidhfmpgf4gaqksj0nuy
+drop table TAttribute if exists
 drop table TCar if exists
-create table TCar (brand varchar(255) not null, modelName varchar(255) not null, primary key (brand, modelName))
+drop table TClimateZone if exists
+drop table TNation if exists
+drop table TPackage if exists
+drop table TPackage_TAttribute if exists
+drop table TUser if exists
+create table TAttribute (name varchar(255) not null, singlePrice float not null, zone varchar(255), primary key (name))
+create table TCar (brand varchar(255) not null, modelName varchar(255) not null, basePrice float not null, primary key (brand, modelName))
+create table TClimateZone (zone varchar(255) not null, primary key (zone))
+create table TNation (name varchar(255) not null, zone varchar(255), primary key (name))
+create table TPackage (name varchar(255) not null, packagePrice float not null, primary key (name))
+create table TPackage_TAttribute (CarPackage_name varchar(255) not null, attributes_name varchar(255) not null)
+create table TUser (mail varchar(255) not null, admin boolean not null, password varchar(255), status varchar(255), primary key (mail))
+alter table TAttribute add constraint FK6kac9skqmtkxlix2c8eb5mrvg foreign key (zone) references TClimateZone
+alter table TNation add constraint FKh68ykbr3lr48bkecjj6f5weyk foreign key (zone) references TClimateZone
+alter table TPackage_TAttribute add constraint FKq48lm7nk0q5hkusppid6a9vuh foreign key (attributes_name) references TAttribute
+alter table TPackage_TAttribute add constraint FK1b1wchidhfmpgf4gaqksj0nuy foreign key (CarPackage_name) references TPackage
+INSERT INTO TCLIMATEZONE VALUES('hot')
+COMMIT
+INSERT INTO TCLIMATEZONE VALUES('cold')
+COMMIT
+INSERT INTO TCLIMATEZONE VALUES('normal')
+COMMIT
+INSERT INTO TCLIMATEZONE VALUES('optional')
+COMMIT
+INSERT INTO TNATION VALUES('de','cold')
+COMMIT
+INSERT INTO TNATION VALUES('fr','cold')
+COMMIT
+INSERT INTO TNATION VALUES('GB','cold')
+COMMIT
+INSERT INTO TNATION VALUES('it','hot')
+COMMIT
+INSERT INTO TATTRIBUTE VALUES('Window',10.0E0,'hot')
+COMMIT

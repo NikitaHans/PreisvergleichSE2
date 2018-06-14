@@ -4,7 +4,8 @@ package edu.hm.shareit.persistence;
 import java.util.List;
 import java.util.concurrent.Callable;
 import javax.inject.Inject;
-import edu.hm.shareit.models.Car;
+
+import edu.hm.shareit.models.*;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -21,16 +22,53 @@ public class DatabaseManager implements DatabaseManagerFunctionality {
 
     private Session entityManager;
     private Transaction transaction;
+    private static boolean init = true;
     private final Logger log = Logger.getLogger(this.getClass());
 
     @Inject
     public DatabaseManager() {
         updateEntityManager();
+        if(init){
+            insertClimateZone(new ClimateZone("hot"));
+            insertClimateZone(new ClimateZone("cold"));
+            insertClimateZone(new ClimateZone("normal"));
+            insertClimateZone(new ClimateZone("optional"));
+            init = false;
+        }
+    }
+
+    public void insertOrder(Order order){
+        Runnable insertCar = ()-> entityManager.persist(order);
+        transactionWrapper(insertCar);
     }
 
     @Override
-    public void insertRequest(Car car) {
+    public void insertCar(Car car) {
         Runnable insertCar = ()-> entityManager.persist(car);
+        transactionWrapper(insertCar);
+    }
+
+    @Override
+    public void insertCarRackage(CarPackage carpackage) {
+        Runnable insertCar = ()-> entityManager.persist(carpackage);
+        transactionWrapper(insertCar);
+    }
+
+    @Override
+    public void insertCarAttribute(CarAttribute attribute) {
+        Runnable insertCar = ()-> entityManager.persist(attribute);
+        transactionWrapper(insertCar);
+    }
+
+    @Override
+    public void insertClimateZone(ClimateZone zone) {
+        Runnable insertCar = ()-> entityManager.persist(zone);
+        transactionWrapper(insertCar);
+    }
+
+    @Override
+    public void insertNation(Nation nation) {
+        Runnable insertCar = ()-> entityManager.persist(nation);
         transactionWrapper(insertCar);
     }
 
@@ -38,6 +76,37 @@ public class DatabaseManager implements DatabaseManagerFunctionality {
     public List<Car> getAllCars() {
         Callable<List<Car>> getCars = ()-> entityManager.createQuery("From Car").list();
         return transactionWrapper(getCars);
+    }
+
+    public List<CarPackage> getAllPackages(){
+        Callable<List<CarPackage>> getCars = ()-> entityManager.createQuery("From CarPackage").list();
+        return transactionWrapper(getCars);
+    }
+
+    public List<CarAttribute> getAllCarAttributes(){
+        Callable<List<CarAttribute>> getCars = ()-> entityManager.createQuery("From CarAttribute").list();
+        return transactionWrapper(getCars);
+    }
+
+    public void insertUser(User user) {
+        Runnable insertUser = ()-> entityManager.persist(user);
+        transactionWrapper(insertUser);
+    }
+
+    public Nation getNation (String nation){
+        entityManager = ShareitServletContextListener.getInjectorInstance().getInstance(SessionFactory.class).getCurrentSession();
+        transaction = entityManager.beginTransaction();
+        Nation req = (Nation) entityManager.get(Nation.class, nation);
+        transaction.commit();
+        return req;
+    }
+
+    public User getUser(String mail){
+        entityManager = ShareitServletContextListener.getInjectorInstance().getInstance(SessionFactory.class).getCurrentSession();
+        transaction = entityManager.beginTransaction();
+        User req = (User) entityManager.get(User.class, mail);
+        transaction.commit();
+        return req;
     }
 
     private void transactionWrapper(Runnable func) {
