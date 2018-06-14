@@ -53,7 +53,7 @@ public class DatabaseManager implements DatabaseManagerFunctionality {
     }
 
     @Override
-    public void insertClimateZone(ClimateZone zone) {
+    public void insertClimateZone(String zone) {
         Runnable insertCar = ()-> entityManager.persist(zone);
         transactionWrapper(insertCar);
     }
@@ -71,6 +71,11 @@ public class DatabaseManager implements DatabaseManagerFunctionality {
 
     public List<CarAttribute> getAllCarAttributes(){
         Callable<List<CarAttribute>> getCars = ()-> entityManager.createQuery("From CarAttribute").list();
+        return transactionWrapper(getCars);
+    }
+
+    public List<CarAttribute> getAllCarAttributes(String zone){
+        Callable<List<CarAttribute>> getCars = ()-> entityManager.createQuery("From CarAttribute where zone=" + zone).list();
         return transactionWrapper(getCars);
     }
 

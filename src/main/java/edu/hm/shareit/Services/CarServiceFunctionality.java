@@ -25,5 +25,5 @@ public interface CarServiceFunctionality {
 
     String insertAttribute (CarAttribute attribute);
 
-    String insertZone (ClimateZone zone);
+    String insertZone (String zone);
 }

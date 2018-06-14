@@ -26,7 +26,7 @@ public interface DatabaseManagerFunctionality {
 
     void insertCarAttribute(CarAttribute attribute);
 
-    void insertClimateZone(ClimateZone zone);
+    void insertClimateZone(String zone);
 
     /**
      * 

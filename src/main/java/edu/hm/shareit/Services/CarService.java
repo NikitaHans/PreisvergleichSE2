@@ -76,7 +76,7 @@ public class CarService implements CarServiceFunctionality {
     }
 
     @Override
-    public String insertZone(ClimateZone zone) {
+    public String insertZone(String zone) {
         String res;
 
         try{

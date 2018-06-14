@@ -1,21 +1,21 @@
 /*C3*/SET SCHEMA PUBLIC
-alter table TAttribute_TZone drop constraint FK145qydv0ry9dv83s84p1ru5m
-alter table TAttribute_TZone drop constraint FK1a04f8r0wtot8ovptt13b8h6s
+alter table TAttribute drop constraint FKivah76ao8sqrgwhq5pla530i4
+alter table TNation drop constraint FK612rpjqea4jl75wyycp94r19
 alter table TPackage_TAttribute drop constraint FKq48lm7nk0q5hkusppid6a9vuh
 alter table TPackage_TAttribute drop constraint FK1b1wchidhfmpgf4gaqksj0nuy
 drop table TAttribute if exists
-drop table TAttribute_TZone if exists
 drop table TCar if exists
+drop table TClimateZone if exists
+drop table TNation if exists
 drop table TPackage if exists
 drop table TPackage_TAttribute if exists
-drop table TZone if exists
-create table TAttribute (name varchar(255) not null, singlePrice float not null, primary key (name))
-create table TAttribute_TZone (CarAttribute_name varchar(255) not null, zones_zone varchar(255) not null)
+create table TAttribute (name varchar(255) not null, singlePrice float not null, zone_zone varchar(255), primary key (name))
 create table TCar (brand varchar(255) not null, modelName varchar(255) not null, basePrice float not null, primary key (brand, modelName))
+create table TClimateZone (zone varchar(255) not null, primary key (zone))
+create table TNation (name varchar(255) not null, climateZone_zone varchar(255), primary key (name))
 create table TPackage (name varchar(255) not null, packagePrice float not null, primary key (name))
 create table TPackage_TAttribute (CarPackage_name varchar(255) not null, attributes_name varchar(255) not null)
-create table TZone (zone varchar(255) not null, primary key (zone))
-alter table TAttribute_TZone add constraint FK145qydv0ry9dv83s84p1ru5m foreign key (zones_zone) references TZone
-alter table TAttribute_TZone add constraint FK1a04f8r0wtot8ovptt13b8h6s foreign key (CarAttribute_name) references TAttribute
+alter table TAttribute add constraint FKivah76ao8sqrgwhq5pla530i4 foreign key (zone_zone) references TClimateZone
+alter table TNation add constraint FK612rpjqea4jl75wyycp94r19 foreign key (climateZone_zone) references TClimateZone
 alter table TPackage_TAttribute add constraint FKq48lm7nk0q5hkusppid6a9vuh foreign key (attributes_name) references TAttribute
 alter table TPackage_TAttribute add constraint FK1b1wchidhfmpgf4gaqksj0nuy foreign key (CarPackage_name) references TPackage

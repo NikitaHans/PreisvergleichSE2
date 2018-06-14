@@ -37,12 +37,10 @@ public class CarServiceMock implements CarServiceFunctionality {
         packageList = new ArrayList<>();
 
         attributeList = new ArrayList<>();
-        attributeList.add(new CarAttribute("Climacontrol", new LinkedList<ClimateZone>(){{add(new ClimateZone("hot"));}}, 10.000f));
-        attributeList.add(new CarAttribute("Heating",  new LinkedList<ClimateZone>(){{add(new ClimateZone("cold"));}}, 10.000f));
-        attributeList.add(new CarAttribute("Navigation",  new LinkedList<ClimateZone>(){{add(new ClimateZone("hot")); add(new ClimateZone("normal")); add(new ClimateZone("cold"));}}, 10.000f));
-        attributeList.add(new CarAttribute("Audio",  new LinkedList<ClimateZone>(){{add(new ClimateZone("cold")); add(new ClimateZone("normal")); add(new ClimateZone("hot"));}}, 10.000f));
-        attributeList.add(new CarAttribute("Window winder",  new LinkedList<ClimateZone>(){{add(new ClimateZone("hot")); add(new ClimateZone("normal")); add(new ClimateZone("cold"));}}, 10.000f));
-        attributeList.add(new CarAttribute("Snow chains",  new LinkedList<ClimateZone>(){{add(new ClimateZone("cold"));}}, 10.000f));
+        attributeList.add(new CarAttribute("Climacontrol", new ClimateZone("hot"), 10.000f));
+        attributeList.add(new CarAttribute("Heating",  new ClimateZone("cold"), 10.000f));
+        attributeList.add(new CarAttribute("Window winder",  new ClimateZone("optional"), 10.000f));
+        attributeList.add(new CarAttribute("Snow chains",  new ClimateZone("cold"), 10.000f));
 
         HashMap<String, int[]>defaultCarPackages = new HashMap<>();
         defaultCarPackages.put("Sport",new int[]{0,3,5});
@@ -125,7 +123,7 @@ public class CarServiceMock implements CarServiceFunctionality {
     }
 
     @Override
-    public String insertZone(ClimateZone zone) {
+    public String insertZone(String zone) {
         return "success";
     }
 }

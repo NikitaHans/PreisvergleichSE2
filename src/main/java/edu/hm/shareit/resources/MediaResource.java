@@ -76,7 +76,7 @@ public class MediaResource {
     @Consumes("application/json")
     public Response createOrder(Order order) {
         log.info("Received createCar request");
-        return buildResponse("{\"status\":\"" + carService.submitOrder(order) + "\"}");
+        return buildResponse(mapJson(carService.submitOrder(order)));
     }
 
     @POST
@@ -101,7 +101,7 @@ public class MediaResource {
     @Path("/insert/zone")
     @Produces("application/json")
     @Consumes("application/json")
-    public Response insertZone(ClimateZone zone) {
+    public Response insertZone(String zone) {
         log.info("Received insertZone request");
         return buildResponse("{\"status\":\"" + carService.insertZone(zone) + "\"}");
     }
@@ -116,13 +116,13 @@ public class MediaResource {
     }
 
     //HELPER METHODS
-    private String mapJson(Object[] list) {
+    private String mapJson(Object... list) {
         String response = mapJsonFunctionality(list);
         log.info("Response send was " + response);
         return response;
     }
 
-    private String mapJsonFunctionality(Object[] list) {
+    private String mapJsonFunctionality(Object... list) {
         ObjectMapper mapper = new ObjectMapper();
         try {
             return mapper.writeValueAsString(list);
@@ -132,6 +132,7 @@ public class MediaResource {
             return "\"Message\":\"error\"";
         }
     }
+
 
     private Response buildResponse(String json) {
         return Response

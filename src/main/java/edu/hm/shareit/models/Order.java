@@ -13,15 +13,15 @@ public class Order {
     private CarPackage paket;
     private CarAttribute[] attributes;
     private float totalPrice;
-    private ClimateZone climateZone;
+    private String nation;
     private boolean verified;
 
     public Order(){}
 
-    public Order(Car car, CarPackage carPackage, ClimateZone climateZone, CarAttribute... attributes){
+    public Order(Car car, CarPackage carPackage, String nation, CarAttribute... attributes){
         this.car = car;
         this.paket = carPackage;
-        this.climateZone = climateZone;
+        this.nation = nation;
         this.attributes = attributes;
         this.totalPrice = 0;
         this.verified = false;
@@ -55,8 +55,8 @@ public class Order {
         return totalPrice;
     }
 
-    public ClimateZone getClimateZone() {
-        return climateZone;
+    public String getNation() {
+        return nation;
     }
 
     public boolean isVerified() {
