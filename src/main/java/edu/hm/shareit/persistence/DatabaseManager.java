@@ -22,15 +22,19 @@ public class DatabaseManager implements DatabaseManagerFunctionality {
 
     private Session entityManager;
     private Transaction transaction;
+    private static boolean init = true;
     private final Logger log = Logger.getLogger(this.getClass());
 
     @Inject
     public DatabaseManager() {
         updateEntityManager();
-        insertClimateZone(new ClimateZone("hot"));
-        insertClimateZone(new ClimateZone("cold"));
-        insertClimateZone(new ClimateZone("normal"));
-        insertClimateZone(new ClimateZone("optional"));
+        if(init){
+            insertClimateZone(new ClimateZone("hot"));
+            insertClimateZone(new ClimateZone("cold"));
+            insertClimateZone(new ClimateZone("normal"));
+            insertClimateZone(new ClimateZone("optional"));
+            init = false;
+        }
     }
 
     public void insertOrder(Order order){
