@@ -36,12 +36,18 @@ public interface DatabaseManagerFunctionality {
      * 
      * @return . 
      */
+
     List<Car> getAllCars();
 
     List<CarPackage> getAllPackages();
 
     List<CarAttribute> getAllCarAttributes();
 
+    List<Order> getAllOrders();
+
     User getUser(String mail);
-    
+
+    Car getCar(String brand, String modelName);
+
+    void init();
 }

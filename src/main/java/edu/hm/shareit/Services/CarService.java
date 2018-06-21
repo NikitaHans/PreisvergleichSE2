@@ -14,6 +14,7 @@ import java.util.*;
 public class CarService implements CarServiceFunctionality {
 
     private DatabaseManager databaseManager;
+    private static boolean init = true;
 
 
     /**
@@ -25,12 +26,70 @@ public class CarService implements CarServiceFunctionality {
         this.databaseManager = databaseManager;
     }
 
-    public Order submitOrder(Order order){
+
+    public void init(){
+        if(init) {
+            databaseManager.init();
+            init = false;
+        }
+    }
+
+    public Order[] submitOrder(Order order){
+        Car carOld = order.getCar();
+        Car carNew = databaseManager.getCar(carOld.getBrand(), carOld.getModelName());
         order = verifyOrder(order);
-        if (order.isVerified()) {
+        if (order.isVerified() && carNew != null) {
+            order.setCar(carNew);
+
+            float orderPrice = 0.f;
+            for(CarAttribute attribute : order.getAttributes()){
+                orderPrice += attribute.getSinglePrice();
+            }
+            orderPrice += order.getCar().getBasePrice();
+            orderPrice += order.getPaket().getPackagePrice();
+            orderPrice = orderPrice * 0.75f;
+            order.setTotalPrice(orderPrice);
+
             this.databaseManager.insertOrder(order);
         }
-        return order;
+        List<Order> allOrders = this.databaseManager.getAllOrders();
+
+        List<Order> userOrders = new LinkedList<>();
+
+        for(Order listOrder : allOrders){
+            if(listOrder.getUser().equals(order.getUser())){
+                userOrders.add(listOrder);
+            }
+        }
+
+        int sizeOrder = userOrders.size();
+        System.out.println("Size: " + sizeOrder);
+        Order lastOrder = null;
+        Order preLastOrder = null;
+
+        if(sizeOrder > 1){
+            long max = 0;
+            for(Order listOrder : userOrders){
+                System.out.println(listOrder.getId());
+                if(listOrder.getId() > max && !order.equals(listOrder)){
+                    max = listOrder.getId();
+                    lastOrder = listOrder;
+                }
+            }
+            max = 0;
+            for(Order listOrder : userOrders){
+                System.out.println(listOrder.getId());
+                if(listOrder.getId() > max && !listOrder.equals(lastOrder)){
+                    max = listOrder.getId();
+                    preLastOrder = listOrder;
+                }
+            }
+        }
+
+        Order[] res = new Order[2];
+        res[0] = order;
+        res[1] = preLastOrder;
+        return res;
     }
 
     @Override
@@ -177,8 +236,9 @@ public class CarService implements CarServiceFunctionality {
         ClimateZone climate = nation.getClimateZone();
 
         // All attributest of order
-        List<CarAttribute> orderAttributes = Arrays.asList(order.getPaket().getAttributes());
-        orderAttributes.addAll(Arrays.asList(order.getAttributes()));
+        List<CarAttribute> orderAttributes = new ArrayList<>();
+        orderAttributes.addAll(order.getPaket().getAttributes());
+        orderAttributes.addAll((order.getAttributes()));
 
         List<CarAttribute> allAtrribs = databaseManager.getAllCarAttributes();
 
@@ -186,7 +246,7 @@ public class CarService implements CarServiceFunctionality {
 
         for (Iterator<CarAttribute> iter = allAtrribs.iterator(); iter.hasNext();) {
             CarAttribute next = iter.next();
-            if (!climate.equals(next.getZone())) {
+            if (climate.equals(next.getZone())) {
                 mandatory.add(next);
             }
         }
@@ -195,15 +255,27 @@ public class CarService implements CarServiceFunctionality {
 
         for (Iterator<CarAttribute> iter = orderAttributes.iterator(); iter.hasNext();) {
             CarAttribute next = iter.next();
-            if (!climate.equals(next.getZone())) {
+            if (climate.equals(next.getZone())) {
                 climateAtr.add(next);
             }
         }
 
+        orderAttributes.removeAll(climateAtr);
+
         boolean checkMandatory = climateAtr.containsAll(mandatory);
 
-        boolean optionalCheck = Arrays.stream(order.getAttributes())
-                .allMatch(attribute -> attribute.getZone().equals(new ClimateZone("Optional")));
+        boolean optionalCheck = false;
+        climate = new ClimateZone("optional");
+
+        for (CarAttribute attribute : orderAttributes) {
+            if (climate.equals(attribute.getZone())) {
+                optionalCheck = true;
+            }
+            else{
+                optionalCheck = false;
+                break;
+            }
+        }
 
         order.setVerified(checkMandatory && optionalCheck);
         return order;

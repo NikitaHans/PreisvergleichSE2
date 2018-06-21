@@ -11,7 +11,7 @@ public class User {
     @Id
     private String mail;
     private String password;
-    private String status;
+    private String nation;
     private boolean admin;
 
     public User(){}
@@ -19,7 +19,7 @@ public class User {
     public User(String mail, String password, String status, boolean admin){
         this.mail = mail;
         this.password = password;
-        this.status = status;
+        this.nation = status;
         this.admin = admin;
     }
 
@@ -35,8 +35,8 @@ public class User {
         return password;
     }
 
-    public String getStatus() {
-        return status;
+    public String getNation() {
+        return nation;
     }
 
     public boolean isAdmin() {
@@ -51,11 +51,11 @@ public class User {
         return admin == user.admin &&
                 Objects.equals(mail, user.mail) &&
                 Objects.equals(password, user.password) &&
-                Objects.equals(status, user.status);
+                Objects.equals(nation, user.nation);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(mail, password, status, admin);
+        return Objects.hash(mail, password, nation, admin);
     }
 }
