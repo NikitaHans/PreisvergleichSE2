@@ -166,6 +166,14 @@ public class DatabaseManager implements DatabaseManagerFunctionality {
         return req;
     }
 
+    public CarAttribute getCarAttribute(String attributeName){
+        entityManager = ShareitServletContextListener.getInjectorInstance().getInstance(SessionFactory.class).getCurrentSession();
+        transaction = entityManager.beginTransaction();
+        CarAttribute req = (CarAttribute) entityManager.get(CarAttribute.class, attributeName);
+        transaction.commit();
+        return req;
+    }
+
     private void transactionWrapper(Runnable func) {
         updateEntityManager();
         transaction = entityManager.beginTransaction();
