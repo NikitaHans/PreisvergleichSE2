@@ -1,9 +1,6 @@
 package edu.hm.shareit.models;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -14,7 +11,7 @@ import java.util.List;
 public class CarPackage {
 
     @Id private String name;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<CarAttribute> attributes;
     private float packagePrice;
 
@@ -56,9 +53,8 @@ public class CarPackage {
         return this;
     }
 
-    public CarAttribute[] getAttributes() {
-        CarAttribute[] array = new CarAttribute[attributes.size()];
-        return attributes.toArray(array);
+    public List<CarAttribute> getAttributes() {
+        return this.attributes;
     }
 
     public float getPackagePrice() {

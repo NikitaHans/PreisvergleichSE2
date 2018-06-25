@@ -103,8 +103,8 @@ public class CarServiceMock implements CarServiceFunctionality {
     }
 
     @Override
-    public Order submitOrder(Order order) {
-        return order;
+    public Order[] submitOrder(Order order) {
+        return new Order[2];
     }
 
     @Override
@@ -140,6 +140,16 @@ public class CarServiceMock implements CarServiceFunctionality {
     @Override
     public Order verifyOrder(Order order) {
         return null;
+    }
+
+    @Override
+    public boolean validUser(Token token) {
+        return false;
+    }
+
+    @Override
+    public void init() {
+
     }
 
 }

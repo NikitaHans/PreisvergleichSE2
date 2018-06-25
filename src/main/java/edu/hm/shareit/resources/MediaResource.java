@@ -2,9 +2,9 @@ package edu.hm.shareit.resources;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.hm.shareit.Services.CarService;
 import edu.hm.shareit.Services.CarServiceFunctionality;
 import edu.hm.shareit.models.*;
+import edu.hm.shareit.security.MySecurityManager;
 import org.apache.log4j.Logger;
 import com.opencsv.CSVReader;
 import com.opencsv.bean.ColumnPositionMappingStrategy;
@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 
 /**
@@ -35,6 +36,7 @@ public class MediaResource {
     @Inject
     public MediaResource(CarServiceFunctionality carService) {
         this.carService = carService;
+        carService.init();
     }
 
 
@@ -84,6 +86,11 @@ public class MediaResource {
     @Consumes("application/json")
     public Response createOrder(Order order) {
         log.info("Received createCar request");
+        Token t = new Token();
+        t.setToken(order.getNation());
+        User user = MySecurityManager.getUser(t);
+        order.setUser(user);
+        order.setNation(user.getNation());
         return buildResponse(mapJson(carService.submitOrder(order)));
     }
 
@@ -111,7 +118,10 @@ public class MediaResource {
     @Consumes("application/json")
     public Response Login(Login loginAttempt) {
         log.info("Received insertCar request");
-        return buildResponse("{\"token\":\"" + carService.verifyUser(loginAttempt) + "\"}");
+        return Response
+                .status(Response.Status.OK)
+                .entity("{\"token\":\""+ carService.verifyUser(loginAttempt) + "\"}")
+                .build();
     }
 
     @POST
@@ -323,6 +333,15 @@ public class MediaResource {
         return buildResponse("{\"status\":\"" + returnMessage + "\"}");
     }
 
+    @POST
+    @Path("/validate")
+    @Consumes("application/json")
+    @Produces("application/json")
+    public Response test(Token token) {
+        return Response.status(200)
+                .entity("{\"result\": \""+carService.validUser(token)+"\"}")
+                .build();
+    }
 
     //HELPER METHODS
     private String mapJson(Object... list) {
@@ -348,6 +367,11 @@ public class MediaResource {
                 .status(Response.Status.OK)
                 .entity(json)
                 .build();
+    }
+
+
+    private boolean checkToken(Token token){
+        return carService.validUser(token);
     }
 
 }

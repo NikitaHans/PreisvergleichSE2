@@ -17,7 +17,7 @@ public interface CarServiceFunctionality {
 
     CarAttribute[] getAttributes();
 
-    Order submitOrder(Order order);
+    Order[] submitOrder(Order order);
 
     String insertCar(Car car);
 
@@ -32,4 +32,8 @@ public interface CarServiceFunctionality {
     String verifyUser(Login login);
 
     Order verifyOrder(Order order);
+
+    boolean validUser (Token token);
+
+    void init();
 }

@@ -1,24 +1,40 @@
 /*C3*/SET SCHEMA PUBLIC
 alter table TAttribute drop constraint FK6kac9skqmtkxlix2c8eb5mrvg
 alter table TNation drop constraint FKh68ykbr3lr48bkecjj6f5weyk
+alter table TOrder drop constraint FKm8scjgotxg8jwmbi24if76sr7
+alter table TOrder drop constraint FKmhkub58boal9geubirepqe1j4
+alter table TOrder drop constraint FK8v3dsd7sjsdtyipeah6rxiu1m
+alter table TOrder_TAttribute drop constraint FKahapbi7hjxm9vnhhjuu7u4v0i
+alter table TOrder_TAttribute drop constraint FK8tn20pocy49123yk5ytp3cmc8
 alter table TPackage_TAttribute drop constraint FKq48lm7nk0q5hkusppid6a9vuh
 alter table TPackage_TAttribute drop constraint FK1b1wchidhfmpgf4gaqksj0nuy
 drop table TAttribute if exists
 drop table TCar if exists
 drop table TClimateZone if exists
 drop table TNation if exists
+drop table TOrder if exists
+drop table TOrder_TAttribute if exists
 drop table TPackage if exists
 drop table TPackage_TAttribute if exists
 drop table TUser if exists
+drop sequence hibernate_sequence if exists
+create sequence hibernate_sequence start with 1 increment by 1
 create table TAttribute (name varchar(255) not null, singlePrice float not null, zone varchar(255), primary key (name))
 create table TCar (brand varchar(255) not null, modelName varchar(255) not null, basePrice float not null, primary key (brand, modelName))
 create table TClimateZone (zone varchar(255) not null, primary key (zone))
 create table TNation (name varchar(255) not null, zone varchar(255), primary key (name))
+create table TOrder (id bigint not null, nation varchar(255), totalPrice float not null, verified boolean not null, brand varchar(255), modelName varchar(255), paket varchar(255), mail varchar(255), primary key (id))
+create table TOrder_TAttribute (Order_id bigint not null, attributes_name varchar(255) not null)
 create table TPackage (name varchar(255) not null, packagePrice float not null, primary key (name))
 create table TPackage_TAttribute (CarPackage_name varchar(255) not null, attributes_name varchar(255) not null)
-create table TUser (mail varchar(255) not null, admin boolean not null, password varchar(255), status varchar(255), primary key (mail))
+create table TUser (mail varchar(255) not null, admin boolean not null, nation varchar(255), password varchar(255), primary key (mail))
 alter table TAttribute add constraint FK6kac9skqmtkxlix2c8eb5mrvg foreign key (zone) references TClimateZone
 alter table TNation add constraint FKh68ykbr3lr48bkecjj6f5weyk foreign key (zone) references TClimateZone
+alter table TOrder add constraint FKm8scjgotxg8jwmbi24if76sr7 foreign key (brand, modelName) references TCar
+alter table TOrder add constraint FKmhkub58boal9geubirepqe1j4 foreign key (paket) references TPackage
+alter table TOrder add constraint FK8v3dsd7sjsdtyipeah6rxiu1m foreign key (mail) references TUser
+alter table TOrder_TAttribute add constraint FKahapbi7hjxm9vnhhjuu7u4v0i foreign key (attributes_name) references TAttribute
+alter table TOrder_TAttribute add constraint FK8tn20pocy49123yk5ytp3cmc8 foreign key (Order_id) references TOrder
 alter table TPackage_TAttribute add constraint FKq48lm7nk0q5hkusppid6a9vuh foreign key (attributes_name) references TAttribute
 alter table TPackage_TAttribute add constraint FK1b1wchidhfmpgf4gaqksj0nuy foreign key (CarPackage_name) references TPackage
 INSERT INTO TCLIMATEZONE VALUES('hot')
@@ -31,11 +47,54 @@ INSERT INTO TCLIMATEZONE VALUES('optional')
 COMMIT
 INSERT INTO TNATION VALUES('de','cold')
 COMMIT
-INSERT INTO TNATION VALUES('fr','cold')
+INSERT INTO TNATION VALUES('ch','cold')
 COMMIT
-INSERT INTO TNATION VALUES('GB','cold')
+INSERT INTO TNATION VALUES('gb','cold')
 COMMIT
 INSERT INTO TNATION VALUES('it','hot')
 COMMIT
-INSERT INTO TATTRIBUTE VALUES('Window',10.0E0,'hot')
+INSERT INTO TCAR VALUES('BMW','7',30000.0E0)
+COMMIT
+INSERT INTO TCAR VALUES('BMW','i8',80000.0E0)
+COMMIT
+INSERT INTO TCAR VALUES('Audi','A8',30000.0E0)
+COMMIT
+INSERT INTO TCAR VALUES('Mercedes','SLS AMG',120000.0E0)
+COMMIT
+INSERT INTO TCAR VALUES('VW','Touran',30000.0E0)
+COMMIT
+INSERT INTO TCAR VALUES('VW','Tiguan',30000.0E0)
+COMMIT
+INSERT INTO TATTRIBUTE VALUES('Climacontrol',10.0E0,'hot')
+COMMIT
+INSERT INTO TATTRIBUTE VALUES('Navigation',50.0E0,'optional')
+COMMIT
+INSERT INTO TATTRIBUTE VALUES('Heating',10.0E0,'cold')
+COMMIT
+INSERT INTO TATTRIBUTE VALUES('Window winder',10.0E0,'optional')
+COMMIT
+INSERT INTO TATTRIBUTE VALUES('Snow chains',10.0E0,'cold')
+COMMIT
+INSERT INTO TATTRIBUTE VALUES('Audio HiFi',20.0E0,'optional')
+COMMIT
+INSERT INTO TPACKAGE VALUES('Sport',1.0E0)
+INSERT INTO TPACKAGE_TATTRIBUTE VALUES('Sport','Snow chains')
+COMMIT
+INSERT INTO TPACKAGE VALUES('Normal',1.0E0)
+INSERT INTO TPACKAGE_TATTRIBUTE VALUES('Normal','Window winder')
+COMMIT
+INSERT INTO TPACKAGE VALUES('Premium',7.0E0)
+INSERT INTO TPACKAGE_TATTRIBUTE VALUES('Premium','Navigation')
+INSERT INTO TPACKAGE_TATTRIBUTE VALUES('Premium','Audio HiFi')
+COMMIT
+INSERT INTO TUSER VALUES('test',FALSE,'de','123')
+COMMIT
+INSERT INTO TORDER VALUES(1,'de',22515.75E0,TRUE,'BMW','7','Normal','test')
+INSERT INTO TORDER_TATTRIBUTE VALUES(1,'Heating')
+INSERT INTO TORDER_TATTRIBUTE VALUES(1,'Snow chains')
+COMMIT
+ALTER SEQUENCE PUBLIC.HIBERNATE_SEQUENCE RESTART WITH 2
+INSERT INTO TORDER VALUES(2,'de',22515.75E0,TRUE,'VW','Touran','Normal','test')
+INSERT INTO TORDER_TATTRIBUTE VALUES(2,'Snow chains')
+INSERT INTO TORDER_TATTRIBUTE VALUES(2,'Heating')
 COMMIT
