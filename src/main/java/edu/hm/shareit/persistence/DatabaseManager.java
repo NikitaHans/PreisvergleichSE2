@@ -1,6 +1,7 @@
 package edu.hm.shareit.persistence;
 
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Callable;
 import javax.inject.Inject;
@@ -28,11 +29,54 @@ public class DatabaseManager implements DatabaseManagerFunctionality {
     @Inject
     public DatabaseManager() {
         updateEntityManager();
+    }
+
+    public void init(){
         if(init){
             insertClimateZone(new ClimateZone("hot"));
             insertClimateZone(new ClimateZone("cold"));
             insertClimateZone(new ClimateZone("normal"));
             insertClimateZone(new ClimateZone("optional"));
+
+            insertNation(new Nation("de", new ClimateZone("cold")));
+            insertNation(new Nation("ch", new ClimateZone("cold")));
+            insertNation(new Nation("gb", new ClimateZone("cold")));
+            insertNation(new Nation("it", new ClimateZone("hot")));
+
+            insertCar(new Car("BMW","7", 30000f));
+            insertCar(new Car("BMW","i8", 80000f));
+            insertCar(new Car("Audi","A8", 30000f));
+            insertCar(new Car("Mercedes","SLS AMG", 120000f));
+            insertCar(new Car("VW","Touran", 30000f));
+            insertCar(new Car("VW","Tiguan", 30000f));
+
+            CarAttribute attribute1 = new CarAttribute("Climacontrol", new ClimateZone("hot"), 10.000f);
+            CarAttribute attribute2 = new CarAttribute("Navigation", new ClimateZone("optional"), 50.000f);
+            CarAttribute attribute3 = new CarAttribute("Heating",  new ClimateZone("cold"), 10.000f);
+            CarAttribute attribute4 = new CarAttribute("Window winder",  new ClimateZone("optional"), 10.000f);
+            CarAttribute attribute5 = new CarAttribute("Snow chains",  new ClimateZone("cold"), 10.000f);
+            CarAttribute attribute6 = new CarAttribute("Audio HiFi",  new ClimateZone("optional"), 20.000f);
+
+            insertCarAttribute(attribute1);
+            insertCarAttribute(attribute2);
+            insertCarAttribute(attribute3);
+            insertCarAttribute(attribute4);
+            insertCarAttribute(attribute5);
+            insertCarAttribute(attribute6);
+
+
+            CarPackage p1 = new CarPackage("Sport");
+            CarPackage p2 = new CarPackage("Normal");
+            CarPackage p3 = new CarPackage("Premium");
+
+            p1.addAttributes(attribute5);
+            p2.addAttributes(attribute4);
+            p3.addAttributes(attribute2);
+            p3.addAttributes(attribute6);
+
+            insertCarRackage(p1);
+            insertCarRackage(p2);
+            insertCarRackage(p3);
             init = false;
         }
     }
@@ -70,6 +114,19 @@ public class DatabaseManager implements DatabaseManagerFunctionality {
     public void insertNation(Nation nation) {
         Runnable insertCar = ()-> entityManager.persist(nation);
         transactionWrapper(insertCar);
+    }
+
+    public Car getCar(String brand, String modelName){
+        entityManager = ShareitServletContextListener.getInjectorInstance().getInstance(SessionFactory.class).getCurrentSession();
+        transaction = entityManager.beginTransaction();
+        Car req = (Car) entityManager.get(Car.class, new CompositeKey(brand, modelName));
+        transaction.commit();
+        return req;
+    }
+
+    public List<Order> getAllOrders (){
+        Callable<List<Order>> getOrders = ()-> entityManager.createQuery("From Order").list();
+        return transactionWrapper(getOrders);
     }
 
     @Override
@@ -116,6 +173,7 @@ public class DatabaseManager implements DatabaseManagerFunctionality {
             func.run();
         } catch (Exception e) {
             log.warn("Encountered " + e.getClass());
+            e.printStackTrace();
         }
         transaction.commit();
     }

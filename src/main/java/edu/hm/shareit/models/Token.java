@@ -28,6 +28,8 @@ public class Token {
         return this.token;
     }
 
+    public void setToken(String token){this.token = token;}
+
     @Override
     public boolean equals(Object obj) {
 

@@ -23,6 +23,7 @@
         <mapping class="edu.hm.shareit.models.ClimateZone" />
         <mapping class="edu.hm.shareit.models.Nation" />
         <mapping class="edu.hm.shareit.models.User" />
+        <mapping class="edu.hm.shareit.models.Order" />
 
     </session-factory>
 
