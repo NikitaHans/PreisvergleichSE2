@@ -142,12 +142,12 @@ public class MediaResource {
     }
 
     @POST
-    @Path("/send/csv")
+    @Path("/send/car_csv")
     @Produces("application/json")
     @Consumes("text/plain")
-    public Response csv_import(String csv) {
+    public Response car_csv_import(String csv) {
 
-        log.info("Received csv_import request:\n" + csv);
+        log.info("Received car_csv_import request:\n" + csv);
         CSVReader reader = new CSVReader(new StringReader(csv));
 
         String[] nextRecord;
@@ -162,7 +162,7 @@ public class MediaResource {
 
                 // Check if there are 3 entries per row
                 if (nextRecord.length != 3){
-                    returnMessage = "Parse error: Cars require 3 attributes";
+                    returnMessage = "Parse error: Cars require 3 entries per row";
                     parseError = true;
                 }
 
@@ -170,7 +170,7 @@ public class MediaResource {
                 try{
                     price = Float.parseFloat(nextRecord[2]);
                 } catch(NumberFormatException e) {
-                    returnMessage = "Parse error: The third column has to be a valid integer";
+                    returnMessage = "Parse error: The third column has to be a valid float";
                     parseError = true;
                 }
 
@@ -201,6 +201,128 @@ public class MediaResource {
 
         return buildResponse("{\"status\":\"" + returnMessage + "\"}");
     }
+
+
+    @POST
+    @Path("/send/attribute_csv")
+    @Produces("application/json")
+    @Consumes("text/plain")
+    public Response attribute_csv_import(String csv) {
+
+        log.info("Received attribute_csv_import request:\n" + csv);
+        CSVReader reader = new CSVReader(new StringReader(csv));
+
+        String[] nextRecord;
+        Boolean parseError = false;
+        String returnMessage = "success";
+        String name, zone;
+        float price = 0;
+        ArrayList<CarAttribute> newAttributes = new ArrayList<CarAttribute>();
+
+        try {
+            while ((nextRecord = reader.readNext()) != null && !parseError) {
+
+                // Check if there are 3 entries per row
+                if (nextRecord.length != 3){
+                    returnMessage = "Parse error: Attributes require 3 entries per row";
+                    parseError = true;
+                }
+
+                // Check if price is a valid float number
+                try{
+                    price = Float.parseFloat(nextRecord[2]);
+                } catch(NumberFormatException e) {
+                    returnMessage = "Parse error: The third column has to be a valid float";
+                    parseError = true;
+                }
+
+                // If everything was correct, add attribute to list
+                if (!parseError){
+                    name = nextRecord[0];
+                    zone = nextRecord[1];
+                    newAttributes.add(new CarAttribute(name, new ClimateZone(zone), price));
+                }
+            }
+        } catch (IOException e) {
+            parseError = true;
+            log.error("IOException while reading CSV");
+        }
+
+        if (!parseError) {
+            boolean insertError = false;
+            while (!insertError && !newAttributes.isEmpty()){
+                CarAttribute attribute = newAttributes.remove(0);
+
+                // If carService didn't return true, stop and report error
+                if(!"success".equals(carService.insertAttribute(attribute))){
+                    insertError = true;
+                    returnMessage = "Failed to insert attribute";
+                }
+            }
+        }
+
+        return buildResponse("{\"status\":\"" + returnMessage + "\"}");
+    }
+
+
+    @POST
+    @Path("/send/package_csv")
+    @Produces("application/json")
+    @Consumes("text/plain")
+    public Response package_import(String csv) {
+
+        log.info("Received package_csv_import request:\n" + csv);
+        CSVReader reader = new CSVReader(new StringReader(csv));
+
+        String[] nextRecord;
+        Boolean parseError = false;
+        String returnMessage = "success";
+        String name;
+        CarAttribute[] attributes;
+        ArrayList<CarPackage> newPackages = new ArrayList<CarPackage>();
+
+        try {
+            while ((nextRecord = reader.readNext()) != null && !parseError) {
+
+                // Initialize attribute array with correct number of entries
+                attributes = new CarAttribute[nextRecord.length -1];
+
+                // Check if there are at least 2 entries per row
+                if (nextRecord.length < 3){
+                    returnMessage = "Parse error: Packages require at least 3 entries per row";
+                    parseError = true;
+                }
+
+                // If everything was correct, add car to list
+                if (!parseError){
+                    name = nextRecord[0];
+                    for (int i = 1; i < nextRecord.length; i++){
+                        // attributes[i-1]= ???
+                    }
+                    newPackages.add(new CarPackage());
+                }
+            }
+        } catch (IOException e) {
+            parseError = true;
+            log.error("IOException while reading CSV");
+        }
+
+        if (!parseError){
+            boolean insertError = false;
+            while (!insertError && !newPackages.isEmpty()){
+                CarPackage packg = newPackages.remove(0);
+
+                // If carService didn't return true, stop and report error
+                if(!"success".equals(carService.insertPackage(packg))){
+                    insertError = true;
+                    returnMessage = "Failed to insert car";
+                }
+            }
+        }
+
+        return buildResponse("{\"status\":\"" + returnMessage + "\"}");
+    }
+
 
     //HELPER METHODS
     private String mapJson(Object... list) {
