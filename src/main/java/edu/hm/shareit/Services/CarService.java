@@ -280,4 +280,8 @@ public class CarService implements CarServiceFunctionality {
         order.setVerified(checkMandatory && optionalCheck);
         return order;
     }
+
+    public CarAttribute getCarAttribute (String attributeName){
+        return databaseManager.getCarAttribute(attributeName);
+    }
 }
