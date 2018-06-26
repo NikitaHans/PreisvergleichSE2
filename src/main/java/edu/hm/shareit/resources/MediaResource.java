@@ -250,6 +250,7 @@ public class MediaResource {
                 if (!parseError){
                     name = nextRecord[0];
                     zone = nextRecord[1];
+
                     newAttributes.add(new CarAttribute(name, new ClimateZone(zone), price));
                 }
             }
@@ -262,7 +263,6 @@ public class MediaResource {
             boolean insertError = false;
             while (!insertError && !newAttributes.isEmpty()){
                 CarAttribute attribute = newAttributes.remove(0);
-
                 // If carService didn't return true, stop and report error
                 if(!"success".equals(carService.insertAttribute(attribute))){
                     insertError = true;
@@ -279,7 +279,7 @@ public class MediaResource {
     @Path("/send/package_csv")
     @Produces("application/json")
     @Consumes("text/plain")
-    public Response package_import(String csv) {
+    public Response package_csv_import(String csv) {
 
         log.info("Received package_csv_import request:\n" + csv);
         CSVReader reader = new CSVReader(new StringReader(csv));
@@ -307,9 +307,9 @@ public class MediaResource {
                 if (!parseError){
                     name = nextRecord[0];
                     for (int i = 1; i < nextRecord.length; i++){
-                        // attributes[i-1]= ???
+                        attributes[i-1] = carService.getCarAttribute(nextRecord[i]);
                     }
-                    newPackages.add(new CarPackage());
+                    newPackages.add(new CarPackage(name, attributes));
                 }
             }
         } catch (IOException e) {
