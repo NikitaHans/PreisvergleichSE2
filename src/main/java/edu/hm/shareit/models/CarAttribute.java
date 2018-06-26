@@ -24,6 +24,10 @@ public class CarAttribute {
 
     }
 
+    public CarAttribute (String name){
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }

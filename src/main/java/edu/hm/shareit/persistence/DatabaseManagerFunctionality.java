@@ -49,5 +49,7 @@ public interface DatabaseManagerFunctionality {
 
     Car getCar(String brand, String modelName);
 
+    CarAttribute getCarAttribute(String attributeName);
+
     void init();
 }
