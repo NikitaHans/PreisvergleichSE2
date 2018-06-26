@@ -33,6 +33,8 @@ public interface CarServiceFunctionality {
 
     Order verifyOrder(Order order);
 
+    CarAttribute getCarAttribute(String attributeName);
+
     boolean validUser (Token token);
 
     void init();

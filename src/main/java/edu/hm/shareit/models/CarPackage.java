@@ -27,7 +27,7 @@ public class CarPackage {
         this(name);
         Collections.addAll(this.attributes, attributes);
         for(CarAttribute attribute : attributes){
-            this.packagePrice += attribute.getSinglePrice() * 0.1;
+            this.packagePrice += attribute.getSinglePrice() * 0.9;
         }
     }
 
@@ -39,7 +39,7 @@ public class CarPackage {
         Collections.addAll(this.attributes, attributes);
 
         for(CarAttribute attribute : attributes){
-            this.packagePrice += attribute.getSinglePrice() * 0.1;
+            this.packagePrice += attribute.getSinglePrice() * 0.9;
         }
 
         return this;
@@ -48,7 +48,7 @@ public class CarPackage {
     public CarPackage removeAttributes(CarAttribute... attributes) {
         for( CarAttribute attribute : attributes) {
             this.attributes.remove(attribute);
-            this.packagePrice -= attribute.getSinglePrice() * 0.1;
+            this.packagePrice -= attribute.getSinglePrice() * 0.9;
         }
         return this;
     }

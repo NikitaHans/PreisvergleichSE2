@@ -143,6 +143,11 @@ public class CarServiceMock implements CarServiceFunctionality {
     }
 
     @Override
+    public CarAttribute getCarAttribute(String attributeName) {
+        return null;
+    }
+
+    @Override
     public boolean validUser(Token token) {
         return false;
     }
